@@ -1,0 +1,18 @@
+footer {
+    background-color: #e3f2fd; /* Example background color */
+    color: white; /* Example text color */
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    color:black
+}
+.experience_img {
+ width:150px;
+ height:106px;
+ margin:auto
+}
+.img_txt {
+ text-align:center
+}

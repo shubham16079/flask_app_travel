@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7e6633e8-a8b7-4487-bfab-1b8a5d9eabfb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/travel.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/adventure.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/art.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/city1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/city2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/city3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/city4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/craft.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/food.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/heritage.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/india.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/luxury.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/museums.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/nature.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/shopping.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/spritual.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/unesco.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/images/yoga.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/destination.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/user.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2atc6IejQlqmUwlSRg2XwGrR9bP" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/shubh/PycharmProjects/travel/app/static/images"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\shubh\PycharmProjects\travel\app\static\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\shubh\PycharmProjects\travel\app\static\images" />
+      <recent name="C:\Users\shubh\PycharmProjects\travel\app" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7e6633e8-a8b7-4487-bfab-1b8a5d9eabfb" name="Changes" comment="" />
+      <created>1705141138188</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705141138188</updated>
+    </task>
+    <servers />
+  </component>
+</project>
