@@ -4,12 +4,12 @@
 
 {% block content %}
 {% if slug %}
-    {% for destination in destinations_test %}
-        <p>Slug: {{ destination.description }}</p>
+    {% for experience in experiences_test %}
+        <p>Slug: {{ experience.description }}</p>
     {% endfor %}
 {% elif not slug %}
-    {% for all_destination in all_destinations %}
-    <p>Slug: {{ all_destination.description }}</p>
+    {% for all_experience in all_experiences %}
+    <p>Slug: {{ all_experience.description }}</p>
     {% endfor %}
 {% endif %}
     

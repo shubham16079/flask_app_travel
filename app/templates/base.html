@@ -13,13 +13,13 @@
        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
     <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/india.jpg') }}" width="150" height="60"></a>
     <div class="form-inline">
-        <div class="nav-item">
-            <a class="nav-link" href="#" id="destination_div" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="destination_div" role="button" data-toggle="collapse" data-target=".multi-collapse-destination" aria-haspopup="true" aria-expanded="false">
                 Destinations
             </a>
         </div>
         <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="experience" role="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">
+            <a class="nav-link dropdown-toggle" href="#" id="experience" role="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" >
                 Experience
             </a>
         </div>
@@ -50,6 +50,19 @@
                     <div class="card card-body">
                         <img class="experience_img" src="{{ url_for('static', filename='images/' + experience.image) }}" alt="Card image cap">
                         <span class="img_txt">{{ experience.name }}</span>
+                    </div>
+                </div>
+            </div>
+         {% endfor %}
+    </div>
+
+    <div class="row">
+        {% for destination in destinations %}
+            <div class="col-md-2">
+                <div class="collapse multi-collapse-destination">
+                    <div class="card card-body">
+                        <img class="experience_img" src="{{ url_for('static', filename='images/' + destination.image) }}" alt="Card image cap">
+                        <span class="img_txt">{{ destination.name }}</span>
                     </div>
                 </div>
             </div>
