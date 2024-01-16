@@ -8,9 +8,41 @@
         <p>Slug: {{ experience.description }}</p>
     {% endfor %}
 {% elif not slug %}
-    {% for all_experience in all_experiences %}
-    <p>Slug: {{ all_experience.description }}</p>
-    {% endfor %}
+<div class="container-fluid">
+    <div class="col-md-12 text-center">
+        <h3>Top Experiences</h3>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+        {% for experience in experiences_pagination.items %}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ experience.slug }}</h5>
+                        <p class="card-text">{{ experience.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    
+    <div class="pagination">
+        <ul class="pagination">
+            {% for page_num in experiences_pagination.iter_pages() %}
+                {% if page_num %}
+                    <li class="page-item{% if page_num == experiences_pagination.page %} active{% endif %}">
+                        <a class="page-link" href="{{ url_for('all_experiences', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    
+    </div>
+</div>
+
 {% endif %}
     
 

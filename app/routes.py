@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for,g
+from flask import render_template, redirect, url_for,g,request
 from app import app
 from app import models
 
@@ -47,8 +47,10 @@ def experience_by_slug(slug):
 
 @app.route('/experiences')
 def all_experiences():
-     all_experiences = models.Experience.get_all()
-     return render_template('experience.html', all_experiences=all_experiences)
+    page = request.args.get('page', 1, type=int)
+    per_page = 2 
+    experiences_pagination = models.Experience.query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template('experience.html', experiences_pagination=experiences_pagination)
 
 @app.route('/destinations/<slug>')
 def destination_by_slug(slug):
