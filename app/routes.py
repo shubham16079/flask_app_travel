@@ -3,9 +3,8 @@ from app import app
 from app import models
 
 
-@app.route('/')
-@app.route('/home')
-def home():
+@app.context_processor
+def inject_data():
     experiences = [
         {'name': 'Adventure', 'image': 'adventure.jpeg'},
         {'name': 'Art', 'image': 'art.jpeg'},
@@ -28,7 +27,12 @@ def home():
         {'name': 'Spiritual', 'image': 'spritual.jpeg'},
         {'name': 'Luxury', 'image': 'luxury.jpeg'}
     ]
-    return render_template('home.html', experiences=experiences, destinations=destinations)
+    return dict(experiences=experiences, destinations=destinations)
+
+@app.route('/')
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 
 @app.route('/set-locale/<lang>')

@@ -8,9 +8,26 @@
         <p>Slug: {{ destination.description }}</p>
     {% endfor %}
 {% elif not slug %}
-    {% for all_destination in all_destinations %}
-    <p>Slug: {{ all_destination.description }}</p>
-    {% endfor %}
+<div class="container-fluid">
+    <div class="col-md-12 text-center">
+        <h3>Top Destinations</h3>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+        {% for all_destination in all_destinations %}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/adventure.jpeg') }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ all_destination.slug }}</h5>
+                        <p class="card-text">{{ all_destination.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
 {% endif %}
     
 
