@@ -48,7 +48,7 @@ def experience_by_slug(slug):
 @app.route('/experiences')
 def all_experiences():
     page = request.args.get('page', 1, type=int)
-    per_page = 2 
+    per_page = 8
     experiences_pagination = models.Experience.query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('experience.html', experiences_pagination=experiences_pagination)
 
@@ -60,6 +60,6 @@ def destination_by_slug(slug):
 @app.route('/destinations')
 def all_destinations():
     page = request.args.get('page', 1, type=int)
-    per_page = 2
+    per_page = 8
     all_destinations = models.Destination.query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('destination.html', all_destinations=all_destinations)

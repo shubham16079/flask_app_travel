@@ -23,7 +23,7 @@
 
      <div class="row" style="margin-top:10px">
         {% for all_destination in all_destinations.items %}
-            <div class="col-md-3">
+            <div class="col-md-3 mb-4">
                 <div class="card" style="width: 18rem;">
                     <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
                     <div class="card-body">
@@ -33,8 +33,8 @@
                 </div>
             </div>
         {% endfor %}
-
-    <div class="pagination">
+    </div>
+     <div class="pagination justify-content-center">
         <ul class="pagination">
             {% for page_num in all_destinations.iter_pages() %}
                 {% if page_num %}
