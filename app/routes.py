@@ -59,5 +59,7 @@ def destination_by_slug(slug):
 
 @app.route('/destinations')
 def all_destinations():
-     all_destinations = models.Destination.get_all_destinations()
-     return render_template('destination.html', all_destinations=all_destinations)
+    page = request.args.get('page', 1, type=int)
+    per_page = 2
+    all_destinations = models.Destination.query.paginate(page=page, per_page=per_page, error_out=False)
+    return render_template('destination.html', all_destinations=all_destinations)

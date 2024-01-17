@@ -5,8 +5,16 @@
 {% block content %}
 {% if slug %}
     {% for experience in experiences_test %}
-        <p>Slug: {{ experience.description }}</p>
-    {% endfor %}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ experience.slug }}</h5>
+                        <p class="card-text">{{ experience.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 {% elif not slug %}
 <div class="container-fluid">
     <div class="col-md-12 text-center">
