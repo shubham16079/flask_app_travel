@@ -33,74 +33,35 @@
 <div class="container-fluid">
   <div class="col-md-12 text-center">
       <h3>Top Destinations</h3>
-    </div>
-  <div class="row" style="margin-top:10px">
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city1.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city2.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city3.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city2.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
   </div>
-  <div class="row" style="margin-top:10px">
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city1.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city2.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city3.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url_for('static', filename='images/city2.jpg') }}" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div>
+
+   <div class="row" style="margin-top:10px">
+      {% for home_destination in home_destinations.items %}
+          <div class="col-md-3 mb-4">
+            <a href="{{ url_for('destination_by_slug',slug=home_destination.slug) }}" style="color: black;">
+              <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ home_destination.slug }}</h5>
+                      <p class="card-text">{{ home_destination.description }}</p>
+                  </div>
+              </div>  
+            </a>
+          </div>
+      {% endfor %}
+  </div>
+   <div class="pagination justify-content-center">
+      <ul class="pagination">
+          {% for page_num in home_destinations.iter_pages() %}
+              {% if page_num %}
+                  <li class="page-item{% if page_num == home_destinations.page %} active{% endif %}">
+                      <a class="page-link" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                  </li>
+              {% else %}
+                  <li class="page-item disabled"><span class="page-link">...</span></li>
+              {% endif %}
+          {% endfor %}
+      </ul>
   </div>
 </div>
 
