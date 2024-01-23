@@ -60,7 +60,8 @@ def destination_by_slug(slug):
      destinations_test = models.Destination.get_destination_by_slug(slug)
      destination_id = destinations_test[0].id if destinations_test else None
      experince_data = models.Experience.get_experience_by_destination_id(destination_id)
-     return render_template('destination.html',slug=slug, destinations_test=destinations_test,experince_data=experince_data)
+     unique_categories = models.Experience.get_all_categories_by_destination(destination_id)
+     return render_template('destination.html',slug=slug, destinations_test=destinations_test,experince_data=experince_data,unique_categories=unique_categories)
 
 @app.route('/destinations')
 def all_destinations():
