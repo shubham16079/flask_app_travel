@@ -58,7 +58,9 @@ def all_experiences():
 @app.route('/destinations/<slug>')
 def destination_by_slug(slug):
      destinations_test = models.Destination.get_destination_by_slug(slug)
-     return render_template('destination.html',slug=slug, destinations_test=destinations_test)
+     destination_id = destinations_test[0].id if destinations_test else None
+     experince_data = models.Experience.get_experience_by_destination_id(destination_id)
+     return render_template('destination.html',slug=slug, destinations_test=destinations_test,experince_data=experince_data)
 
 @app.route('/destinations')
 def all_destinations():

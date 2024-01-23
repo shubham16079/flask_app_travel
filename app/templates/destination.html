@@ -3,6 +3,11 @@
 {% block title %}Home - Travel Website{% endblock %}
 
 {% block content %}
+<style>
+    button {
+        cursor: pointer;
+    }
+</style>
 {% if slug %}
      {% for all_destination in destinations_test %}
             <div class="col-md-3">
@@ -13,6 +18,42 @@
                         <p class="card-text">{{ all_destination.description }}</p>
                     </div>
                 </div>
+            </div>
+            <br>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row" style="margin-top:10px">
+                        {% for experience in experince_data %}
+                            <div class="col-md-3 mb-4">
+                                <div class="card" style="width: 18rem;">
+                                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ experience.slug }}</h5>
+                                        <p class="card-text">{{ experience.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">..hello.</div>
+                <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">..fdsfsfddfs.</div>
+                <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">.fdsfs..</div>
             </div>
         {% endfor %}
 {% elif not slug %}
@@ -50,6 +91,17 @@
 </div>
 
 {% endif %}
+<script>
+    $(document).ready(function() {
+      $('#myTab button').on('click', function (e) {
+        e.preventDefault();
+        $('.tab-pane').removeClass('active show');
+        $($(this).data('bs-target')).addClass('active show');
+        $('#myTab button').removeClass('active');
+        $(this).addClass('active');
+      });
+    });
+  </script>
     
 
 {% endblock %}

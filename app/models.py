@@ -7,10 +7,15 @@ class Experience(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column()
     description = db.Column()
+    destination = db.Column() 
 
     @classmethod
     def get_by_slug(cls, slug):
         return cls.query.filter_by(slug=slug).all()
+    
+    @classmethod
+    def get_experience_by_destination_id(cls, destination_id):
+        return cls.query.filter_by(destination=destination_id).all()
 
     @classmethod
     def get_all(cls):
@@ -20,7 +25,7 @@ class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)    
-    image = db.Column(db.String(255)) 
+    image = db.Column(db.String(255))
 
 
 class Destination(db.Model):
