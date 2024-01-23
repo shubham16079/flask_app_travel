@@ -25,7 +25,7 @@
         {% for all_destination in all_destinations.items %}
             <div class="col-md-3 mb-4">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ all_destination.categories.image) }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{ all_destination.slug }}</h5>
                         <p class="card-text">{{ all_destination.description }}</p>

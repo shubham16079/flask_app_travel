@@ -16,12 +16,20 @@ class Experience(db.Model):
     def get_all(cls):
         return cls.query.all()
 
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)    
+    image = db.Column(db.String(255)) 
+
 
 class Destination(db.Model):
     __tablename__ = 'destinations'
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column()
     description = db.Column()
+    category = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    categories = db.relationship('Category',foreign_keys=[category],  backref='destinations')
 
     @classmethod
     def get_destination_by_slug(cls, slug):
