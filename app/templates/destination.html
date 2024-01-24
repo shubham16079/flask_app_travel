@@ -9,7 +9,7 @@
     }
 </style>
 
-{% if slug %}
+{% if slug and not is_category_wise %}
     {% for all_destination in destinations_test %}
         <div class="col-md-3">
             <div class="card" style="width: 18rem;">
@@ -50,7 +50,7 @@
             {% endfor %}
         </div>
     {% endfor %}
-{% elif not slug %}
+{% elif not slug and not is_category_wise%}
     <div class="container-fluid">
         <div class="col-md-12 text-center">
             <h3>Top Destinations</h3>
@@ -82,6 +82,23 @@
                 {% endfor %}
             </ul>
         </div>
+    </div>
+    {% elif is_category_wise %}
+    <div class="col-md-12 text-center">
+      <h3>{{ slug|capitalize }}</h3>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+      {% for destination_by_category in destinations_by_category %}
+        <div class="col-md-3 mb-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{ destination_by_category.slug }}</h5>
+              <p class="card-text">{{ destination_by_category.description }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
     </div>
 {% endif %}
 <script>

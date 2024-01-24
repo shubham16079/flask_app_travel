@@ -49,6 +49,7 @@ class Destination(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column()
     description = db.Column()
+    image = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='destinations')
 
@@ -59,3 +60,11 @@ class Destination(db.Model):
     @classmethod
     def get_all_destinations(cls):
         return cls.query.all()
+    
+    @classmethod
+    def get_destinations_by_category(cls, slug):
+     if slug == 'all':
+        return cls.query.all()
+     else:
+        category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
+        return cls.query.filter_by(category=category_id).all()

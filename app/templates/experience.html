@@ -3,7 +3,7 @@
 {% block title %}Home - Travel Website{% endblock %}
 
 {% block content %}
-  {% if slug %}
+  {% if slug and not is_category_wise %}
     {% for experience in experiences_test %}
       <div class="col-md-3">
         <div class="card mb-4" style="width: 18rem;">
@@ -51,13 +51,13 @@
     </div>
   {% elif is_category_wise %}
     <div class="col-md-12 text-center">
-      <h3>Experiences</h3>
+      <h3>{{ slug|capitalize }}</h3>
     </div>
     <div class="row" style="margin-top: 10px;">
       {% for experience_by_category in experiences_by_category %}
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title">{{ experience_by_category.slug }}</h5>
               <p class="card-text">{{ experience_by_category.description }}</p>

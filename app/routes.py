@@ -7,7 +7,7 @@ from app import models
 def inject_data():
     experiences = [
         {'name': 'Adventure', 'image': 'adventure.jpeg', 'slug': 'adventure'},
-        {'name': 'Art', 'image': 'art.jpeg', 'slug': 'art'},
+        {'name': 'Arts', 'image': 'art.jpeg', 'slug': 'art'},
         {'name': 'Heritage', 'image': 'heritage.jpeg', 'slug': 'heritage'},
         {'name': 'Shopping', 'image': 'shopping.jpeg', 'slug': 'shopping'},
         {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
@@ -21,7 +21,7 @@ def inject_data():
     ]
     destinations = [
         {'name': 'Popular', 'image': 'adventure.jpeg', 'slug': 'popular'},
-        {'name': 'All', 'image': 'art.jpeg', 'slug': 'all'},
+        {'name': 'All Destinations', 'image': 'art.jpeg', 'slug': 'all'},
         {'name': 'Heritage', 'image': 'heritage.jpeg', 'slug': 'heritage'},
         {'name': 'Shopping', 'image': 'shopping.jpeg', 'slug': 'shopping'},
         {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
@@ -79,7 +79,12 @@ def ajax_experiences():
     experiences = [{'slug': exp.slug, 'description': exp.description,'image': exp.image} for exp in experiences_data]
     return jsonify({'experiences': experiences})
 
-@app.route('/experience/category/<slug>')
-def experience(slug):
+@app.route('/experiences/category/<slug>')
+def experiences_category(slug):
      experiences_by_category = models.Experience.get_experiences_by_category(slug)
-     return render_template('experience.html',is_category_wise=1, experiences_by_category=experiences_by_category)
+     return render_template('experience.html',is_category_wise=1,slug=slug, experiences_by_category=experiences_by_category)
+
+@app.route('/destinations/category/<slug>')
+def destinations_category(slug):
+     destinations_by_category = models.Destination.get_destinations_by_category(slug)
+     return render_template('destination.html',is_category_wise=1,slug=slug, destinations_by_category=destinations_by_category)
