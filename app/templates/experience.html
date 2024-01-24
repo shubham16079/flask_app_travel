@@ -4,6 +4,9 @@
 
 {% block content %}
   {% if slug and not is_category_wise %}
+  <div class="col-md-12 text-center">
+    <h3>{{slug | capitalize}}</h3>
+  </div>
     {% for experience in experiences_test %}
       <div class="col-md-3">
         <div class="card mb-4" style="width: 18rem;">

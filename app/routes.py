@@ -21,13 +21,17 @@ def inject_data():
     ]
     destinations = [
         {'name': 'Popular', 'image': 'adventure.jpeg', 'slug': 'popular'},
-        {'name': 'All Destinations', 'image': 'art.jpeg', 'slug': 'all'},
+        {'name': 'Destinations', 'image': 'art.jpeg', 'slug': 'all'},
         {'name': 'Heritage', 'image': 'heritage.jpeg', 'slug': 'heritage'},
         {'name': 'Shopping', 'image': 'shopping.jpeg', 'slug': 'shopping'},
         {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
         {'name': 'Luxury', 'image': 'luxury.jpeg', 'slug': 'luxury'}
     ]
     return dict(experiences=experiences, destinations=destinations)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 @app.route('/')
 @app.route('/home')
@@ -43,7 +47,7 @@ def set_locale(lang):
     g.lang = lang
     return redirect(url_for('home'))
 
-@app.route('/experiences/<slug>')
+@app.route('/experience/<slug>')
 def experience_by_slug(slug):
      experiences_test = models.Experience.get_by_slug(slug)
      return render_template('experience.html',slug=slug, experiences_test=experiences_test)

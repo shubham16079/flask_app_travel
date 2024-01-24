@@ -91,11 +91,13 @@
       {% for destination_by_category in destinations_by_category %}
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">{{ destination_by_category.slug }}</h5>
-              <p class="card-text">{{ destination_by_category.description }}</p>
-            </div>
+            <a href="{{ url_for('destination_by_slug', slug=destination_by_category.slug) }}">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ destination_by_category.slug }}</h5>
+                    <p class="card-text">{{ destination_by_category.description }}</p>
+                </div>
+            </a>
           </div>
         </div>
       {% endfor %}
