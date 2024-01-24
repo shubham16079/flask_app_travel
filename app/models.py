@@ -8,6 +8,7 @@ class Experience(db.Model):
     slug = db.Column()
     description = db.Column()
     destination = db.Column() 
+    image = db.Column() 
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='experiences')
 
@@ -22,7 +23,9 @@ class Experience(db.Model):
     
     @classmethod
     def get_all_categories_by_destination(cls,destination_id):
-        return db.session.query(cls.category).filter_by(destination=destination_id).distinct().all()
+        return db.session.query(Category.id,Category.name, Category.image).\
+        join(Experience, Experience.category == Category.id).\
+        filter(Experience.destination == destination_id).distinct().all()
 
     @classmethod
     def get_all(cls):

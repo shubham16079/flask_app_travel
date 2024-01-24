@@ -8,101 +8,131 @@
         cursor: pointer;
     }
 </style>
+
 {% if slug %}
-     {% for all_destination in destinations_test %}
-            <div class="col-md-3">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ all_destination.slug }}</h5>
-                        <p class="card-text">{{ all_destination.description }}</p>
-                    </div>
+    {% for all_destination in destinations_test %}
+        <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ all_destination.slug }}</h5>
+                    <p class="card-text">{{ all_destination.description }}</p>
                 </div>
             </div>
-            <br>
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+        </div>
+        <br>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            {% for category_data in unique_categories %}
+                <li class="nav-item p-1" role="presentation">
+                    <button class="nav-link" 
+                            id="{{ category_data.name|lower }}-tab" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#{{ category_data.name|lower }}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="{{ category_data.name|lower }}" 
+                            aria-selected="false"
+                            data-destination-id="{{ all_destination.id }}"
+                            data-category-id="{{ category_data.id }}">
+                        {{ category_data.name }}
+                    </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
-                </li>
-            </ul>
+            {% endfor %}
+        </ul>
 
-            <div class="tab-content">
-                <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="row" style="margin-top:10px">
-                        {% for experience in experince_data %}
+        <div class="tab-content">
+            {% for category_data in unique_categories %}
+                <div class="tab-pane" id="{{ category_data.name|lower }}" role="tabpanel" aria-labelledby="{{ category_data.name|lower }}-tab">
+                    <div class="row" style="margin-top:10px" id="{{ category_data.name|lower }}-experiences-container">
+                        {% for experience in experiences_data %}
                             <div class="col-md-3 mb-4">
                                 <div class="card" style="width: 18rem;">
                                     <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ experience.slug }}</h5>
                                         <p class="card-text">{{ experience.description }}</p>
-                                        <p class="card-text">{{ unique_categories }}</p>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">..hello.</div>
-                <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">..fdsfsfddfs.</div>
-                <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">.fdsfs..</div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% elif not slug %}
-<div class="container-fluid">
-    <div class="col-md-12 text-center">
-        <h3>Top Destinations</h3>
-    </div>
+    <div class="container-fluid">
+        <div class="col-md-12 text-center">
+            <h3>Top Destinations</h3>
+        </div>
 
-     <div class="row" style="margin-top:10px">
-        {% for all_destination in all_destinations.items %}
-            <div class="col-md-3 mb-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ all_destination.categories.image) }}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ all_destination.slug }}</h5>
-                        <p class="card-text">{{ all_destination.description }}</p>
+        <div class="row" style="margin-top:10px">
+            {% for all_destination in all_destinations.items %}
+                <div class="col-md-3 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ all_destination.categories.image) }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ all_destination.slug }}</h5>
+                            <p class="card-text">{{ all_destination.description }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-     <div class="pagination justify-content-center">
-        <ul class="pagination">
-            {% for page_num in all_destinations.iter_pages() %}
-                {% if page_num %}
-                    <li class="page-item{% if page_num == all_destinations.page %} active{% endif %}">
-                        <a class="page-link" href="{{ url_for('all_destinations', page=page_num) }}">{{ page_num }}</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">...</span></li>
-                {% endif %}
             {% endfor %}
-        </ul>
+        </div>
+        <div class="pagination justify-content-center">
+            <ul class="pagination">
+                {% for page_num in all_destinations.iter_pages() %}
+                    {% if page_num %}
+                        <li class="page-item{% if page_num == all_destinations.page %} active{% endif %}">
+                            <a class="page-link" href="{{ url_for('all_destinations', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-</div>
-
 {% endif %}
 <script>
     $(document).ready(function() {
-      $('#myTab button').on('click', function (e) {
-        e.preventDefault();
-        $('.tab-pane').removeClass('active show');
-        $($(this).data('bs-target')).addClass('active show');
-        $('#myTab button').removeClass('active');
-        $(this).addClass('active');
-      });
+        $('#myTab button').on('click', function (e) {
+            e.preventDefault();
+            var destinationId = $(this).data('destination-id');
+            var categoryId =  $(this).data('category-id');
+            var categoryName = $(this).text().trim();
+            
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/experiences',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({ destination_id: destinationId, category_id: categoryId }),
+                dataType: 'json',
+                success: function(response) {
+                    var experiencesHtml = '';
+                    for (var i = 0; i < response.experiences.length; i++) {
+                        experiencesHtml += '<div class="col-md-3 mb-4">';
+                        var imageUrl = "{{ url_for('static', filename='images/') }}" + response.experiences[i].image;
+                        experiencesHtml += '<div class="card" style="width: 18rem;">';
+                        experiencesHtml += '<img class="card-img-top" src="'+imageUrl+'" alt="Card image cap">';
+                        experiencesHtml += '<div class="card-body">';
+                        experiencesHtml += '<h5 class="card-title">' + response.experiences[i].slug + '</h5>';
+                        experiencesHtml += '<p class="card-text">' + response.experiences[i].description + '</p>';
+                        experiencesHtml += '</div></div></div>';
+                    }
+                    $('#' + categoryName.toLowerCase() + '-experiences-container').html(experiencesHtml);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+            $('.tab-pane').removeClass('active show');
+            $('#' + categoryName.toLowerCase()).addClass('active show');
+            $('#myTab button').removeClass('active');
+            $(this).addClass('active');
+        });
+        $('#myTab button:first').click();
     });
-  </script>
-    
-
+   
+</script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for,g,request
+from flask import render_template, redirect, url_for,g,request,jsonify
 from app import app
 from app import models
 
@@ -69,3 +69,12 @@ def all_destinations():
     per_page = 8
     all_destinations = models.Destination.query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('destination.html', all_destinations=all_destinations)
+
+@app.route('/ajax/experiences', methods=['POST'])
+def ajax_experiences():
+    data = request.json  
+    destination_id = data.get('destination_id')
+    category_id = data.get('category_id')
+    experiences_data = models.Experience.query.filter_by(destination=destination_id, category=category_id).all()
+    experiences = [{'slug': exp.slug, 'description': exp.description,'image': exp.image} for exp in experiences_data]
+    return jsonify({'experiences': experiences})
