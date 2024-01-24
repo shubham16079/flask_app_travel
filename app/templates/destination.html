@@ -44,17 +44,7 @@
             {% for category_data in unique_categories %}
                 <div class="tab-pane" id="{{ category_data.name|lower }}" role="tabpanel" aria-labelledby="{{ category_data.name|lower }}-tab">
                     <div class="row" style="margin-top:10px" id="{{ category_data.name|lower }}-experiences-container">
-                        {% for experience in experiences_data %}
-                            <div class="col-md-3 mb-4">
-                                <div class="card" style="width: 18rem;">
-                                    <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ experience.slug }}</h5>
-                                        <p class="card-text">{{ experience.description }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+                        
                     </div>
                 </div>
             {% endfor %}

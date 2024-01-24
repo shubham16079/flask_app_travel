@@ -23,19 +23,25 @@ class Experience(db.Model):
     
     @classmethod
     def get_all_categories_by_destination(cls,destination_id):
-        return db.session.query(Category.id,Category.name, Category.image).\
+        return db.session.query(Category.id,Category.name, Category.image,Category.slug).\
         join(Experience, Experience.category == Category.id).\
         filter(Experience.destination == destination_id).distinct().all()
 
     @classmethod
     def get_all(cls):
         return cls.query.all()
+    
+    @classmethod
+    def get_experiences_by_category(cls, slug):
+     category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
+     return cls.query.filter_by(category=category_id).all()
 
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)    
     image = db.Column(db.String(255))
+    slug = db.Column(db.String(50))
 
 
 class Destination(db.Model):

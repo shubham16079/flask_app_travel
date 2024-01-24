@@ -46,14 +46,18 @@
 <div class="container-fluid">
    <div class="row">
         {% for experience in experiences %}
+       
             <div class="col-md-2">
                 <div class="collapse multi-collapse">
                     <div class="card card-body">
-                        <img class="experience_img" src="{{ url_for('static', filename='images/' + experience.image) }}" alt="Card image cap">
-                        <span class="img_txt">{{ experience.name }}</span>
+                        <a href="{{ url_for('experience', slug=experience.slug) }}">
+                            <img class="experience_img" src="{{ url_for('static', filename='images/' + experience.image) }}" alt="Card image cap">
+                            <span class="img_txt">{{ experience.name }}</span>
+                        </a>
                     </div>
                 </div>
             </div>
+       
          {% endfor %}
     </div>
 

@@ -6,26 +6,26 @@ from app import models
 @app.context_processor
 def inject_data():
     experiences = [
-        {'name': 'Adventure', 'image': 'adventure.jpeg'},
-        {'name': 'Art', 'image': 'art.jpeg'},
-        {'name': 'Heritage', 'image': 'heritage.jpeg'},
-        {'name': 'Shopping', 'image': 'shopping.jpeg'},
-        {'name': 'Spiritual', 'image': 'spritual.jpeg'},
-        {'name': 'Luxury', 'image': 'luxury.jpeg'},
-        {'name': 'Craft', 'image': 'craft.jpeg'},
-        {'name': 'Museums', 'image': 'museums.jpeg'},
-        {'name': 'Unesco', 'image': 'unesco.jpeg'},
-        {'name': 'Yoga', 'image': 'yoga.jpeg'},
-        {'name': 'Food', 'image': 'food.jpeg'},
-        {'name': 'Nature', 'image': 'nature.jpeg'},
+        {'name': 'Adventure', 'image': 'adventure.jpeg', 'slug': 'adventure'},
+        {'name': 'Art', 'image': 'art.jpeg', 'slug': 'art'},
+        {'name': 'Heritage', 'image': 'heritage.jpeg', 'slug': 'heritage'},
+        {'name': 'Shopping', 'image': 'shopping.jpeg', 'slug': 'shopping'},
+        {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
+        {'name': 'Luxury', 'image': 'luxury.jpeg', 'slug': 'luxury'},
+        {'name': 'Craft', 'image': 'craft.jpeg', 'slug': 'craft'},
+        {'name': 'Museums', 'image': 'museums.jpeg', 'slug': 'museums'},
+        {'name': 'Unesco', 'image': 'unesco.jpeg', 'slug': 'unesco'},
+        {'name': 'Yoga', 'image': 'yoga.jpeg', 'slug': 'yoga'},
+        {'name': 'Food', 'image': 'food.jpeg', 'slug': 'food'},
+        {'name': 'Nature', 'image': 'nature.jpeg', 'slug': 'nature'}
     ]
     destinations = [
-        {'name': 'Popular', 'image': 'adventure.jpeg'},
-        {'name': 'All', 'image': 'art.jpeg'},
-        {'name': 'Heritage', 'image': 'heritage.jpeg'},
-        {'name': 'Shopping', 'image': 'shopping.jpeg'},
-        {'name': 'Spiritual', 'image': 'spritual.jpeg'},
-        {'name': 'Luxury', 'image': 'luxury.jpeg'}
+        {'name': 'Popular', 'image': 'adventure.jpeg', 'slug': 'popular'},
+        {'name': 'All', 'image': 'art.jpeg', 'slug': 'all'},
+        {'name': 'Heritage', 'image': 'heritage.jpeg', 'slug': 'heritage'},
+        {'name': 'Shopping', 'image': 'shopping.jpeg', 'slug': 'shopping'},
+        {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
+        {'name': 'Luxury', 'image': 'luxury.jpeg', 'slug': 'luxury'}
     ]
     return dict(experiences=experiences, destinations=destinations)
 
@@ -78,3 +78,8 @@ def ajax_experiences():
     experiences_data = models.Experience.query.filter_by(destination=destination_id, category=category_id).all()
     experiences = [{'slug': exp.slug, 'description': exp.description,'image': exp.image} for exp in experiences_data]
     return jsonify({'experiences': experiences})
+
+@app.route('/experience/category/<slug>')
+def experience(slug):
+     experiences_by_category = models.Experience.get_experiences_by_category(slug)
+     return render_template('experience.html',is_category_wise=1, experiences_by_category=experiences_by_category)
