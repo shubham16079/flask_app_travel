@@ -60,11 +60,13 @@
       {% for experience_by_category in experiences_by_category %}
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">{{ experience_by_category.slug }}</h5>
-              <p class="card-text">{{ experience_by_category.description }}</p>
-            </div>
+            <a href="{{ url_for('experience_by_slug', slug=experience_by_category.slug) }}">
+              <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{ experience_by_category.slug }}</h5>
+                <p class="card-text">{{ experience_by_category.description }}</p>
+              </div>
+            </a>
           </div>
         </div>
       {% endfor %}
