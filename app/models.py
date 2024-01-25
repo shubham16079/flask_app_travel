@@ -9,6 +9,7 @@ class Experience(db.Model):
     description = db.Column()
     destination = db.Column() 
     image = db.Column() 
+    name = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='experiences')
 
@@ -35,6 +36,12 @@ class Experience(db.Model):
     def get_experiences_by_category(cls, slug):
      category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
      return cls.query.filter_by(category=category_id).all()
+    
+    @classmethod
+    def get_experiences_by_search(cls, search_text): 
+       return cls.query.filter(
+            (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
+        ).limit(10).all()
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -50,6 +57,7 @@ class Destination(db.Model):
     slug = db.Column()
     description = db.Column()
     image = db.Column()
+    name = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='destinations')
 
@@ -68,3 +76,9 @@ class Destination(db.Model):
      else:
         category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
         return cls.query.filter_by(category=category_id).all()
+     
+    @classmethod
+    def get_destinations_by_search(cls, search_text): 
+       return cls.query.filter(
+            (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
+        ).limit(10).all()

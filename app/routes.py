@@ -92,3 +92,37 @@ def experiences_category(slug):
 def destinations_category(slug):
      destinations_by_category = models.Destination.get_destinations_by_category(slug)
      return render_template('destination.html',is_category_wise=1,slug=slug, destinations_by_category=destinations_by_category)
+
+@app.route('/ajax/common-search', methods=['POST'])
+def common_search():
+    data = request.json  
+    search_text = data.get('search_text','').strip()  
+    destinations = models.Destination.get_destinations_by_search(search_text)
+    destinations_list = [
+        {
+            'id': destination.id,
+            'slug': destination.slug,
+            'description': destination.description,
+            'image': destination.image,
+            'name': destination.name,
+            'category': destination.category
+        }
+        for destination in destinations
+    ]
+    experiences = models.Experience.get_experiences_by_search(search_text)
+    experiences_list = [
+        {
+            'id': experience.id,
+            'slug': experience.slug,
+            'description': experience.description,
+            'image': experience.image,
+            'name': experience.name,
+            'category': experience.category
+        }
+        for experience in experiences
+    ]
+    result_dict = {
+        'destinations': destinations_list,
+        'experiences': experiences_list
+    }
+    return jsonify(result_dict)
