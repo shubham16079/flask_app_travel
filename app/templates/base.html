@@ -80,13 +80,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    var imgElements = document.querySelectorAll('img');
-    imgElements.forEach(function (imgElement) {
-        imgElement.onerror = function () {
-            imgElement.src = "{{ url_for('static', filename='images/unesco.jpeg') }}"; // Replace with the URL of your custom image
-        };
+        var imgElements = document.querySelectorAll('img');
+        imgElements.forEach(function (imgElement) {
+            imgElement.onerror = function () {
+                imgElement.src = "{{ url_for('static', filename='images/unesco.jpeg') }}"; // Replace with the URL of your custom image
+            };
+        });
     });
-});
 </script>
     </header>
 
