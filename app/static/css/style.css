@@ -16,3 +16,6 @@ footer {
 .img_txt {
  text-align:center
 }
+a {
+    cursor: pointer;
+}

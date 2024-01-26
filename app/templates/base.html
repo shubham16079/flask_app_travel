@@ -117,11 +117,14 @@
                     searchData += '<h2>Destinations</h2>';
                     for (let i = 0; i < response.destinations.length; i++) {
                         searchData += '<div class="card">';
+                        let redirect_url = '{{url_for("destination_by_slug",slug="")}}'+response.destinations[i].slug;
+                        searchData += '<a href="'+redirect_url+'">';
                         searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.destinations[i].image + '" class="card-img-top" alt="Destination Image">';
                         searchData += '<div class="card-body">';
                         searchData += '<h5 class="card-title">' + response.destinations[i].name + '</h5>';
                         searchData += '<p class="card-text">' + response.destinations[i].description + '</p>';
-                        searchData += '</div>';
+                        searchData += '</a>';
+                        searchData += '</a></div>';
                         searchData += '</div>';
                     }
                     searchData += '</div>';
@@ -132,10 +135,13 @@
                     searchData += '<h2>Experiences</h2>';
                     for (let i = 0; i < response.experiences.length; i++) {
                         searchData += '<div class="card">';
+                        let redirect_url = '{{url_for("experience_by_slug",slug="")}}'+response.experiences[i].slug;
+                        searchData += '<a href="'+redirect_url+'">';
                         searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.experiences[i].image + '" class="card-img-top" alt="Experience Image">';
                         searchData += '<div class="card-body">';
                         searchData += '<h5 class="card-title">' + response.experiences[i].name + '</h5>';
                         searchData += '<p class="card-text">' + response.experiences[i].description + '</p>';
+                        searchData += '</a>';
                         searchData += '</div>';
                         searchData += '</div>';
                     }
