@@ -3,7 +3,7 @@
 {% block title %}Home - Travel Website{% endblock %}
 
 {% block content %}
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin-top:2px">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -43,10 +43,12 @@
                   <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
                   <div class="card-body">
                       <h5 class="card-title">{{ home_destination.slug }}</h5>
-                      <p class="card-text">{{ home_destination.description }}</p>
+            </a>
+                      <p class="card-text read_more_content">{{ home_destination.description }}</p>
+                      <a href="javascript:void(0)" class="read_more_button">Read More</a>
                   </div>
               </div>  
-            </a>
+            
           </div>
       {% endfor %}
   </div>
@@ -64,5 +66,35 @@
       </ul>
   </div>
 </div>
+<script>
+  function loadReadMore() {
+        var maxWordsInitially = 20;
+        $('.read_more_button').on('click', function () {
+            var content = $(this).prev('.read_more_content');
+            var words = content.data('original-text').split(' ');
+
+            if ($(this).hasClass('less')) {
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                $(this).text('Read More');
+                $(this).removeClass('less');
+            } else {
+                content.html(words.join(' '));
+                $(this).text('Read Less');
+                $(this).addClass('less');
+            }
+        });
+        $('.read_more_content').each(function () {
+            var content = $(this);
+            var words = content.text().split(' ');
+
+            if (words.length > maxWordsInitially) {
+                content.data('original-text', content.text());
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                content.next('.read_more_button').show();
+            }
+        });
+    }
+    loadReadMore();
+</script>
 
 {% endblock %}
