@@ -14,7 +14,9 @@
                 <img class="slider_image" src="{{ url_for('static', filename='images/slider_city.jpeg') }}" alt="Card image cap">
                 <div class="centered">{{ all_destination.name }}</div>
         <div class="container-fluid mt-3">
+            <hr>
             <p>{{ all_destination.description }}</p>
+            <hr>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 {% for category_data in unique_categories %}
                     <li class="nav-item p-1" role="presentation">
