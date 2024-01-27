@@ -5,158 +5,147 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script><link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/india.jpg') }}" width="150" height="60"></a>
-    <div class="form-inline">
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="destination_div" role="button" data-toggle="collapse" data-target=".multi-collapse-destination" aria-haspopup="true" aria-expanded="false">
-                Destinations
-            </a>
-        </div>
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="experience" role="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" >
-                Experience
-            </a>
-        </div>
-        <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="language" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Language
-            </a>
-            <div class="dropdown-menu" aria-labelledby="language">
-                <a href="{{ url_for('set_locale', lang='en') }}" class="dropdown-item">English</a>
-                <a href="{{ url_for('set_locale', lang='es') }}" class="dropdown-item">Español</a>
+        <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/india.jpg') }}" width="150" height="60"></a>
+        <div class="form-inline">
+            <div class="nav-item dropdown dropdown-hover">
+                <a class="nav-link dropdown-toggle" href="#" id="destination_div" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Destinations
+                </a>
+                <!-- Mega Dropdown menu for Destinations -->
+                <div class="dropdown-menu mega-menu" aria-labelledby="destination_div">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% for destination in destinations %}
+                                <div class="col-md-2">
+                                    <a href="{{ url_for('destinations_category', slug=destination.slug) }}">
+                                        <img class="experience_img" src="{{ url_for('static', filename='images/' + destination.image) }}" alt="Card image cap">
+                                        <span class="img_txt">{{ destination.name }}</span>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="nav-item">
+            <div class="nav-item dropdown-hover dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="experience" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Experience
+                </a>
+                <!-- Mega Dropdown menu for Experiences -->
+                <div class="dropdown-menu mega-menu" aria-labelledby="experience">
+                    <div class="container-fluid">
+                        <div class="row">
+                            {% for experience in experiences %}
+                                <div class="col-md-2">
+                                    <a href="{{ url_for('experiences_category', slug=experience.slug) }}">
+                                        <img class="experience_img" src="{{ url_for('static', filename='images/' + experience.image) }}" alt="Card image cap">
+                                        <span class="img_txt">{{ experience.name }}</span>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="nav-item">
                 <img src="{{ url_for('static', filename='images/search_icon.svg') }}" style="padding-top: 6px;height: 33px;cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg"/>
-            
-        </div>
-    </div>
-</nav>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="col-md-12 text-center">
-                    <h3>Search</h3>
-                </div>
-                <input class="form-control" value="" id="common_search" autocomplete="off" autofocus="" type="text" placeholder="Type Here...">
-            </div>
-            <div id="search_data_container" class="row">
-                <!-- search data will be placed here -->
             </div>
         </div>
-      </div>
-    </div>
-  </div>
-<div class="container-fluid">
-   <div class="row">
-        {% for experience in experiences %}
-       
-            <div class="col-md-2">
-                <div class="collapse multi-collapse">
-                    <div class="card card-body">
-                        <a href="{{ url_for('experiences_category', slug=experience.slug) }}">
-                            <img class="experience_img" src="{{ url_for('static', filename='images/' + experience.image) }}" alt="Card image cap">
-                            <span class="img_txt">{{ experience.name }}</span>
-                        </a>
+    </nav>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="col-md-12 text-center">
+                            <h3>Search</h3>
+                        </div>
+                        <input class="form-control" value="" id="common_search" autocomplete="off" autofocus="" type="text" placeholder="Type Here...">
+                    </div>
+                    <div id="search_data_container" class="row">
+                        <!-- search data will be placed here -->
                     </div>
                 </div>
             </div>
-       
-         {% endfor %}
+        </div>
     </div>
 
-    <div class="row">
-        {% for destination in destinations %}
-            <div class="col-md-2">
-                <div class="collapse multi-collapse-destination">
-                    <div class="card card-body">
-                        <a href="{{ url_for('destinations_category', slug=destination.slug) }}">
-                            <img class="experience_img" src="{{ url_for('static', filename='images/' + destination.image) }}" alt="Card image cap">
-                            <span class="img_txt">{{ destination.name }}</span>
-                         </a>
-                    </div>
-                </div>
-            </div>
-         {% endfor %}
-    </div>
-
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var imgElements = document.querySelectorAll('img');
-        imgElements.forEach(function (imgElement) {
-            imgElement.onerror = function () {
-                imgElement.src = "{{ url_for('static', filename='images/unesco.jpeg') }}"; // Replace with the URL of your custom image
-            };
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var imgElements = document.querySelectorAll('img');
+            imgElements.forEach(function (imgElement) {
+                imgElement.onerror = function () {
+                    imgElement.src = "{{ url_for('static', filename='images/unesco.jpeg') }}"; // Replace with the URL of your custom image
+                };
+            });
         });
-    });
-    $(document).on('input', '#common_search', function () {
-        let search_text = $(this).val();
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/common-search',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({ search_text: search_text }),
-            dataType: 'json',
-            success: function (response) {
-                let searchData = '';
+        $(document).on('input', '#common_search', function () {
+            let search_text = $(this).val();
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/common-search',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({ search_text: search_text }),
+                dataType: 'json',
+                success: function (response) {
+                    let searchData = '';
 
-                if (response.destinations != undefined && response.destinations.length > 0) {
-                    searchData += '<div class="destination-container col-md-6">';
-                    searchData += '<h2>Destinations</h2>';
-                    for (let i = 0; i < response.destinations.length; i++) {
-                        searchData += '<div class="card">';
-                        let redirect_url = '{{url_for("destination_by_slug",slug="")}}'+response.destinations[i].slug;
-                        searchData += '<a href="'+redirect_url+'">';
-                        searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.destinations[i].image + '" class="card-img-top" alt="Destination Image">';
-                        searchData += '<div class="card-body">';
-                        searchData += '<h5 class="card-title">' + response.destinations[i].name + '</h5>';
-                        searchData += '<p class="card-text">' + response.destinations[i].description + '</p>';
-                        searchData += '</a>';
-                        searchData += '</a></div>';
+                    if (response.destinations != undefined && response.destinations.length > 0) {
+                        searchData += '<div class="destination-container col-md-6">';
+                        searchData += '<h4 class="h4">Destinations</h4>';
+                        for (let i = 0; i < response.destinations.length; i++) {
+                            searchData += '<div class="card search_card">';
+                            let redirect_url = '{{url_for("destination_by_slug",slug="")}}'+response.destinations[i].slug;
+                            searchData += '<a href="'+redirect_url+'">';
+                            searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.destinations[i].image + '" class="card-img-top" alt="Destination Image">';
+                            searchData += '<div class="card-body">';
+                            searchData += '<h5 class="card-title">' + response.destinations[i].name + '</h5>';
+                            searchData += '<p class="card-text">' + response.destinations[i].description + '</p>';
+                            searchData += '</a>';
+                            searchData += '</a></div>';
+                            searchData += '</div>';
+                        }
                         searchData += '</div>';
                     }
-                    searchData += '</div>';
-                }
 
-                if (response.experiences != undefined && response.experiences.length > 0) {
-                    searchData += '<div class="experience-container col-md-6">';
-                    searchData += '<h2>Experiences</h2>';
-                    for (let i = 0; i < response.experiences.length; i++) {
-                        searchData += '<div class="card">';
-                        let redirect_url = '{{url_for("experience_by_slug",slug="")}}'+response.experiences[i].slug;
-                        searchData += '<a href="'+redirect_url+'">';
-                        searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.experiences[i].image + '" class="card-img-top" alt="Experience Image">';
-                        searchData += '<div class="card-body">';
-                        searchData += '<h5 class="card-title">' + response.experiences[i].name + '</h5>';
-                        searchData += '<p class="card-text">' + response.experiences[i].description + '</p>';
-                        searchData += '</a>';
-                        searchData += '</div>';
+                    if (response.experiences != undefined && response.experiences.length > 0) {
+                        searchData += '<div class="experience-container col-md-6">';
+                        searchData += '<h4 class="h4">Experiences</h4>';
+                        for (let i = 0; i < response.experiences.length; i++) {
+                            searchData += '<div class="card search_card">';
+                            let redirect_url = '{{url_for("experience_by_slug",slug="")}}'+response.experiences[i].slug;
+                            searchData += '<a href="'+redirect_url+'">';
+                            searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.experiences[i].image + '" class="card-img-top" alt="Experience Image">';
+                            searchData += '<div class="card-body">';
+                            searchData += '<h5 class="card-title">' + response.experiences[i].name + '</h5>';
+                            searchData += '<p class="card-text">' + response.experiences[i].description + '</p>';
+                            searchData += '</a>';
+                            searchData += '</div>';
+                            searchData += '</div>';
+                        }
                         searchData += '</div>';
                     }
-                    searchData += '</div>';
-                }
 
-                $('#search_data_container').html(searchData);
-            },
-            error: function (error) {
-                console.log('Error:', error);
-            }
+                    $('#search_data_container').html(searchData);
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
         });
-    });
-</script>
-   
+    </script>
 
     <main>
         {% block content %}{% endblock %}

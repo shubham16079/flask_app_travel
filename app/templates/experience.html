@@ -4,20 +4,37 @@
 
 {% block content %}
   {% if slug and not is_category_wise %}
-  <div class="col-md-12 text-center">
-    <h3>{{slug | capitalize}}</h3>
-  </div>
     {% for experience in experiences_test %}
-      <div class="col-md-3">
-        <div class="card mb-4" style="width: 18rem;">
-          <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">{{ experience.slug }}</h5>
+          <img class="slider_image" src="{{ url_for('static', filename='images/slider_city.jpeg') }}" alt="Card image cap">
+          <div class="centered">{{ experience.name }}</div>
+          <div class="container-fluid">
+            <hr>
             <p class="card-text">{{ experience.description }}</p>
           </div>
-        </div>
-      </div>
     {% endfor %}
+    <hr>
+    <div class="container-fluid">
+      <div class="col-md-12 text-center">
+          <h3>Explore other experiences</h3>
+      </div>
+      <div class="row other_destinations_div" style="margin-top:10px">
+          {% for other_experience in other_experiences %}
+              <div class="col-md-3 mb-4">
+                  <div class="card" style="width: 18rem;">
+                      <a href="{{ url_for('experience_by_slug', slug=other_experience.slug) }}">
+                          <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ other_experience.categories.image) }}" alt="Card image cap">
+                          <div class="card-body">
+                              <h5 class="card-title">{{ other_experience.slug }}</h5>
+                          </a>
+                          <p class="card-text read_more_content">{{ other_experience.description }}</p>
+                          <a href="javascript:void(0)" class="read_more_button">Read More</a>
+                          </div>
+                      
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+   </div>
   {% elif not slug and not is_category_wise %}
     <div class="container-fluid">
       <div class="col-md-12 text-center">
@@ -52,7 +69,7 @@
         </ul>
       </div>
     </div>
-  {% elif is_category_wise %}
+{% elif is_category_wise %}
     <div class="col-md-12 text-center">
       <h3>{{ slug|capitalize }}</h3>
     </div>
@@ -60,16 +77,49 @@
       {% for experience_by_category in experiences_by_category %}
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
-            <a href="{{ url_for('experience_by_slug', slug=experience_by_category.slug) }}">
-              <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{ experience_by_category.slug }}</h5>
-                <p class="card-text">{{ experience_by_category.description }}</p>
+               <a href="{{ url_for('experience_by_slug', slug=experience_by_category.slug) }}">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{ experience_by_category.slug }}</h5>
+              </a>
+                <p class="card-text read_more_content">{{ experience_by_category.description }}</p>
+                <a href="javascript:void(0)" class="read_more_button">Read More</a>
               </div>
-            </a>
+          
           </div>
         </div>
       {% endfor %}
     </div>
   {% endif %}
+  <script>
+    
+    function loadReadMore() {
+        var maxWordsInitially = 20;
+        $('.read_more_button').on('click', function () {
+            var content = $(this).prev('.read_more_content');
+            var words = content.data('original-text').split(' ');
+
+            if ($(this).hasClass('less')) {
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                $(this).text('Read More');
+                $(this).removeClass('less');
+            } else {
+                content.html(words.join(' '));
+                $(this).text('Read Less');
+                $(this).addClass('less');
+            }
+        });
+        $('.read_more_content').each(function () {
+            var content = $(this);
+            var words = content.text().split(' ');
+
+            if (words.length > maxWordsInitially) {
+                content.data('original-text', content.text());
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                content.next('.read_more_button').show();
+            }
+        });
+    }
+    loadReadMore();
+  </script>
 {% endblock %}

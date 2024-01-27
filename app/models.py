@@ -42,6 +42,10 @@ class Experience(db.Model):
        return cls.query.filter(
             (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
         ).limit(10).all()
+        
+    @classmethod
+    def get_other_experiences(cls,slug):
+        return cls.query.filter(cls.slug != slug).limit(8).all() 
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -82,3 +86,7 @@ class Destination(db.Model):
        return cls.query.filter(
             (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
         ).limit(10).all()
+
+    @classmethod
+    def get_other_destinations(cls,slug):
+        return cls.query.filter(cls.slug != slug).limit(8).all()    

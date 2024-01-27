@@ -11,45 +11,63 @@
 
 {% if slug and not is_category_wise %}
     {% for all_destination in destinations_test %}
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{ all_destination.slug }}</h5>
-                    <p class="card-text">{{ all_destination.description }}</p>
-                </div>
+                <img class="slider_image" src="{{ url_for('static', filename='images/slider_city.jpeg') }}" alt="Card image cap">
+                <div class="centered">{{ all_destination.name }}</div>
+        <div class="container-fluid mt-3">
+            <p>{{ all_destination.description }}</p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                {% for category_data in unique_categories %}
+                    <li class="nav-item p-1" role="presentation">
+                        <button class="nav-link" 
+                                id="{{ category_data.name|lower }}-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#{{ category_data.name|lower }}" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="{{ category_data.name|lower }}" 
+                                aria-selected="false"
+                                data-destination-id="{{ all_destination.id }}"
+                                data-category-id="{{ category_data.id }}">
+                            {{ category_data.name }}<span class="{{ category_data.name|lower }}-count"></span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="tab-content">
+                {% for category_data in unique_categories %}
+                    <div class="tab-pane" id="{{ category_data.name|lower }}" role="tabpanel" aria-labelledby="{{ category_data.name|lower }}-tab">
+                        <div class="row" style="margin-top:10px" id="{{ category_data.name|lower }}-experiences-container">
+                            
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        <br>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            {% for category_data in unique_categories %}
-                <li class="nav-item p-1" role="presentation">
-                    <button class="nav-link" 
-                            id="{{ category_data.name|lower }}-tab" 
-                            data-bs-toggle="tab" 
-                            data-bs-target="#{{ category_data.name|lower }}" 
-                            type="button" 
-                            role="tab" 
-                            aria-controls="{{ category_data.name|lower }}" 
-                            aria-selected="false"
-                            data-destination-id="{{ all_destination.id }}"
-                            data-category-id="{{ category_data.id }}">
-                        {{ category_data.name }}<span class="{{ category_data.name|lower }}-count"></span>
-                    </button>
-                </li>
-            {% endfor %}
-        </ul>
+    {% endfor %}
+    <div class="container-fluid">
+        <div class="col-md-12 text-center">
+            <h3>Explore other destinations</h3>
+        </div>
 
-        <div class="tab-content">
-            {% for category_data in unique_categories %}
-                <div class="tab-pane" id="{{ category_data.name|lower }}" role="tabpanel" aria-labelledby="{{ category_data.name|lower }}-tab">
-                    <div class="row" style="margin-top:10px" id="{{ category_data.name|lower }}-experiences-container">
+        <div class="row other_destinations_div" style="margin-top:10px">
+            {% for other_destination in other_destinations %}
+                <div class="col-md-3 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <a href="{{ url_for('destination_by_slug', slug=other_destination.slug) }}">
+                            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ other_destination.categories.image) }}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ other_destination.slug }}</h5>
+                            </a>
+                            <p class="card-text read_more_content">{{ other_destination.description }}</p>
+                            <a href="javascript:void(0)" class="read_more_button">Read More</a>
+                            </div>
                         
                     </div>
                 </div>
             {% endfor %}
         </div>
-    {% endfor %}
+    </div>
 {% elif not slug and not is_category_wise%}
     <div class="container-fluid">
         <div class="col-md-12 text-center">
@@ -83,7 +101,7 @@
             </ul>
         </div>
     </div>
-    {% elif is_category_wise %}
+{% elif is_category_wise %}
     <div class="col-md-12 text-center">
       <h3>{{ slug|capitalize }}</h3>
     </div>
@@ -91,13 +109,15 @@
       {% for destination_by_category in destinations_by_category %}
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
-            <a href="{{ url_for('destination_by_slug', slug=destination_by_category.slug) }}">
-                <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{ destination_by_category.slug }}</h5>
-                    <p class="card-text">{{ destination_by_category.description }}</p>
+                <a href="{{ url_for('destination_by_slug', slug=destination_by_category.slug) }}">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ destination_by_category.slug }}</h5>
+                </a>
+                    <p class="card-text read_more_content">{{ destination_by_category.description }}</p>
+                    <a href="javascript:void(0)" class="read_more_button">Read More</a>
                 </div>
-            </a>
+           
           </div>
         </div>
       {% endfor %}
@@ -129,12 +149,14 @@
                         experiencesHtml += '<div class="card" style="width: 18rem;">';
                         experiencesHtml += '<img class="card-img-top" src="' + imageUrl + '" alt="Card image cap">';
                         experiencesHtml += '<div class="card-body">';
-                        experiencesHtml += '<h5 class="card-title">' + response.experiences[i].slug + '</h5>';
-                        experiencesHtml += '<p class="card-text">' + response.experiences[i].description + '</p>';
-                        experiencesHtml += '</div></div></a></div>';
+                        experiencesHtml += '<h5 class="card-title">' + response.experiences[i].slug + '</h5></a>';
+                        experiencesHtml += '<p class="card-text read_more_content">' + response.experiences[i].description + '</p>';
+                        experiencesHtml += '<a href="javascript:void(0)" class="read_more_button">Read More</a>';
+                        experiencesHtml += '</div></div></div>'; 
                     }
                     $('.' + categoryName.toLowerCase() + '-count').html('(' + response.experiences.length + ')');
                     $('#' + categoryName.toLowerCase() + '-experiences-container').html(experiencesHtml);
+                    loadReadMore();
                 },
                 error: function(error) {
                     console.log('Error:', error);
@@ -148,6 +170,35 @@
         });
         $('#myTab button:first').click();
     });
-   
+
+    function loadReadMore() {
+        var maxWordsInitially = 20;
+        $('.read_more_button').on('click', function () {
+            var content = $(this).prev('.read_more_content');
+            var words = content.data('original-text').split(' ');
+
+            if ($(this).hasClass('less')) {
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                $(this).text('Read More');
+                $(this).removeClass('less');
+            } else {
+                content.html(words.join(' '));
+                $(this).text('Read Less');
+                $(this).addClass('less');
+            }
+        });
+        $('.read_more_content').each(function () {
+            var content = $(this);
+            var words = content.text().split(' ');
+
+            if (words.length > maxWordsInitially) {
+                content.data('original-text', content.text());
+                content.html(words.slice(0, maxWordsInitially).join(' ') + '...');
+                content.next('.read_more_button').show();
+            }
+        });
+    }
+    loadReadMore();
+
 </script>
 {% endblock %}

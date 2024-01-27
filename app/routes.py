@@ -49,8 +49,9 @@ def set_locale(lang):
 
 @app.route('/experience/<slug>')
 def experience_by_slug(slug):
-     experiences_test = models.Experience.get_by_slug(slug)
-     return render_template('experience.html',slug=slug, experiences_test=experiences_test)
+    other_experiences = models.Experience.get_other_experiences(slug)
+    experiences_test = models.Experience.get_by_slug(slug)
+    return render_template('experience.html',slug=slug, experiences_test=experiences_test,other_experiences=other_experiences)
 
 @app.route('/experiences')
 def all_experiences():
@@ -62,10 +63,11 @@ def all_experiences():
 @app.route('/destinations/<slug>')
 def destination_by_slug(slug):
      destinations_test = models.Destination.get_destination_by_slug(slug)
+     other_destinations = models.Destination.get_other_destinations(slug)
      destination_id = destinations_test[0].id if destinations_test else None
      experince_data = models.Experience.get_experience_by_destination_id(destination_id)
      unique_categories = models.Experience.get_all_categories_by_destination(destination_id)
-     return render_template('destination.html',slug=slug, destinations_test=destinations_test,experince_data=experince_data,unique_categories=unique_categories)
+     return render_template('destination.html',slug=slug, destinations_test=destinations_test,experince_data=experince_data,unique_categories=unique_categories,other_destinations=other_destinations)
 
 @app.route('/destinations')
 def all_destinations():
