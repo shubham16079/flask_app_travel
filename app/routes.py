@@ -1,8 +1,8 @@
 from flask import render_template, redirect, url_for,g,request,jsonify,session,flash,Blueprint
 from app import app
 from app import models
-
-
+from werkzeug.utils import secure_filename
+import os
 @app.context_processor
 def inject_data():
     experiences = [
@@ -167,4 +167,19 @@ def logout():
 @app.route('/admin/add_new_destination', methods=['GET', 'POST'])
 #@login_required
 def new_destination():
-    return render_template('admin/add_new_destination.html')
+    if request.method == 'POST' and request.form.get('location') != '':
+        form_data = request.form.to_dict()
+        if 'image' in request.files:
+            image = request.files['image']
+            if image.filename != '':
+                DESTINATION_FOLDER = os.path.join(os.getcwd(), 'app','static', 'images', 'destinations')
+                os.makedirs(DESTINATION_FOLDER, exist_ok=True)
+                save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
+                form_data['image'] = image.filename
+
+        lastInsertId = models.Destination.save_new_destination(form_data)
+        if lastInsertId:
+            flash('Destination Saved!', 'success')
+
+    categories = models.Category.get_all_categories()
+    return render_template('admin/add_new_destination.html', categories=categories)

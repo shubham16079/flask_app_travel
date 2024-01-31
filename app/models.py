@@ -53,6 +53,9 @@ class Category(db.Model):
     name = db.Column(db.String(255), nullable=False)    
     image = db.Column(db.String(255))
     slug = db.Column(db.String(50))
+    @classmethod
+    def get_all_categories(cls):
+        return cls.query.all()
 
 
 class Destination(db.Model):
@@ -62,6 +65,7 @@ class Destination(db.Model):
     description = db.Column()
     image = db.Column()
     name = db.Column()
+    location = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='destinations')
 
@@ -89,4 +93,10 @@ class Destination(db.Model):
 
     @classmethod
     def get_other_destinations(cls,slug):
-        return cls.query.filter(cls.slug != slug).limit(8).all()    
+        return cls.query.filter(cls.slug != slug).limit(8).all() 
+    @classmethod
+    def save_new_destination(cls,form_data):
+        new_destination = cls(**form_data)
+        db.session.add(new_destination)
+        db.session.commit()
+        return new_destination 
