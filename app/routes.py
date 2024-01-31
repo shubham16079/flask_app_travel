@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for,g,request,jsonify
+from flask import render_template, redirect, url_for,g,request,jsonify,session,flash,Blueprint
 from app import app
 from app import models
 
@@ -27,6 +27,7 @@ def inject_data():
         {'name': 'Spiritual', 'image': 'spritual.jpeg', 'slug': 'spiritual'},
         {'name': 'Luxury', 'image': 'luxury.jpeg', 'slug': 'luxury'}
     ]
+  
     return dict(experiences=experiences, destinations=destinations)
 
 @app.errorhandler(404)
@@ -128,3 +129,42 @@ def common_search():
         'experiences': experiences_list
     }
     return jsonify(result_dict)
+
+def login_required(view_func):
+    def wrapper(*args, **kwargs):
+        if not session.get('isLoggedIn'):
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('login'))
+        return view_func(*args, **kwargs)
+    return wrapper
+
+@app.route('/admin')
+def admin():
+    if session.get('isLoggedIn'):
+        return render_template('admin/admin.html', test_data="you are logged in")
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['email'] == 'admin@gmail.com' and request.form['password'] == 'password':
+            session['isLoggedIn'] = True
+            flash('Login successful!', 'success')
+            return redirect(url_for('admin'))
+        else:
+            flash('Invalid credentials. Please try again.', 'error')
+
+    return render_template('admin/login.html')
+
+@app.route('/admin/logout')
+def logout():
+    session.pop('isLoggedIn', None)
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('admin'))
+
+
+@app.route('/admin/add_new_destination', methods=['GET', 'POST'])
+#@login_required
+def new_destination():
+    return render_template('admin/add_new_destination.html')

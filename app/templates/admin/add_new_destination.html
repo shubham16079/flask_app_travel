@@ -1,0 +1,58 @@
+{% extends 'admin/admin.html' %}
+
+{% block title %}Home - Travel Website{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row flex-nowrap">
+        <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
+            <div class="container mt-4">
+                <h2>Add New Destination</h2>
+
+                <form action="process_form.php" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                        <div class="invalid-feedback">Please enter a name.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        <div class="invalid-feedback">Please enter a description.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location:</label>
+                        <input type="text" class="form-control" id="location" name="location">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="slug" class="form-label">Slug:</label>
+                        <input type="text" class="form-control" id="slug" name="slug" required>
+                        <div class="invalid-feedback">Please enter a slug.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image URL:</label>
+                        <input type="text" class="form-control" id="image" name="image">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category:</label>
+                        <select class="form-select form-control" id="category" name="category">
+                            <!-- Populate dropdown with options from your database -->
+                            <option value="1">Category 1</option>
+                            <option value="2">Category 2</option>
+                            <option value="3">Category 3</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
