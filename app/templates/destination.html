@@ -11,7 +11,7 @@
 
 {% if slug and not is_category_wise %}
     {% for all_destination in destinations_test %}
-                <img class="slider_image" src="{{ url_for('static', filename='images/slider_city.jpeg') }}" alt="Card image cap">
+                <img class="slider_image" src="{{ url_for('static', filename='images/kashi_slider.jpg') }}" alt="Card image cap">
                 <div class="centered">{{ all_destination.name }}</div>
         <div class="container-fluid mt-3">
             <hr>
@@ -114,7 +114,7 @@
                 <a href="{{ url_for('destination_by_slug', slug=destination_by_category.slug) }}">
                     <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">{{ destination_by_category.slug }}</h5>
+                        <h5 class="card-title">{{ destination_by_category.name }}</h5>
                 </a>
                     <p class="card-text read_more_content">{{ destination_by_category.description }}</p>
                     <a href="javascript:void(0)" class="read_more_button">Read More</a>

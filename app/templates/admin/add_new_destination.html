@@ -5,60 +5,85 @@
 {% block content %}
 <div class="container">
     <div class="row flex-nowrap">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
         <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
             <div class="container mt-4">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <h2>Add New Destination</h2>
 
                 <form action="{{url_for('new_destination')}}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                        <div class="invalid-feedback">Please enter a name.</div>
-                    </div>
+                    {% if form %}
+                        {{ form.hidden_tag() }}
+                    {% endif %}
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
-                        <div class="invalid-feedback">Please enter a description.</div>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="name" name="name" value="{{ form.name.data or '' }}" required>
+                                {% for error in form.name.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location:</label>
-                        <input type="text" class="form-control" id="location" name="location">
-                    </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location:</label>
+                                <input type="text" class="form-control {% if form.location.errors %}is-invalid{% endif %}" id="location" name="location" value="{{ form.location.data or '' }}">
+                                {% for error in form.location.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="slug" class="form-label">Slug:</label>
-                        <input type="text" class="form-control" id="slug" name="slug" required>
-                        <div class="invalid-feedback">Please enter a slug.</div>
-                    </div>
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">Slug:</label>
+                                <input type="text" class="form-control {% if form.slug.errors %}is-invalid{% endif %}" id="slug" name="slug" value="{{ form.slug.data or '' }}" required>
+                                {% for error in form.slug.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Image URL:</label>
-                        <input type="file" class="form-control" id="image" name="image">
-                    </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category:</label>
+                                <select class="form-select form-control {% if form.category.errors %}is-invalid{% endif %}" id="category" name="category">
+                                    <option value="" selected="selected">Select Category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if form.category.data == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.category.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="category" class="form-label">Category:</label>
-                        
-                        <select class="form-select form-control" id="category" name="category">
-                            {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image URL:</label>
+                                <input type="file" class="form-control {% if form.image.errors %}is-invalid{% endif %}" id="image" name="image">
+                                {% for error in form.image.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description:</label>
+                                <textarea class="form-control {% if form.description.errors %}is-invalid{% endif %}" id="description" name="description" rows="4" required>{{ form.description.data or '' }}</textarea>
+                                {% for error in form.description.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </main>

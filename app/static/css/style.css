@@ -45,7 +45,7 @@ a {
 .dropdown-hover:hover>.dropdown-menu {
   display: inline-block;
   position: absolute;
-  left: -400%;
+  left: -500%;
 }
 
 .dropdown-hover>.dropdown-toggle:active {

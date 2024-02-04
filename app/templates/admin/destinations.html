@@ -1,0 +1,102 @@
+{% extends 'admin/admin.html' %}
+
+{% block title %}Home - Travel Website{% endblock %}
+
+{% block content %}
+<link href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.js"></script>
+<div class="container">
+    <div class="row flex-nowrap">
+        <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
+            <div class="container mt-4">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <h2>Destinations</h2>
+                <div id="base-url" data-url="{{ url_for('get_destinations_list') }}"></div>
+                <table class="display" id="destinations-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Slug</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+                <div id="edit-form" style="display: none;">
+                    <h2>Edit Destination</h2>
+                    <!-- Your form fields for editing go here -->
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+   $(document).ready(function() {
+        var baseUrl = $('#base-url').data('url');
+        var dataTable;
+
+        // Initialize DataTable only if it doesn't exist
+        if (!$.fn.DataTable.isDataTable('#destinations-table')) {
+            dataTable = $('#destinations-table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "debug": true,
+                "ajax": {
+                    url: baseUrl,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    "dataSrc": "data",
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "location" },
+                    { "data": "slug" },
+                    { "data": "category_name" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return '<button class="btn btn-sm btn-primary edit-btn" data-id="' + row.id + '">Edit</button>' +
+                                '<button class="btn btn-sm btn-danger delete-btn" data-id="' + row.id + '">Delete</button>';
+                        }
+                    },
+                ],
+            });
+        } else {
+            // If DataTable exists, just redraw it
+            dataTable.ajax.reload();
+        }
+
+        // Optional: Event listeners for edit and delete buttons
+        $('#destinations-table').on('click', '.edit-btn', function() {
+            var destinationId = $(this).data('id');
+            // Fetch destination details and show edit form
+            // Example: You can make another AJAX request to get details and populate the form
+            // Display the edit form using: $('#edit-form').show();
+        });
+
+        $('#destinations-table').on('click', '.delete-btn', function() {
+            var destinationId = $(this).data('id');
+            // Implement logic to delete the destination
+            // Example: You can make an AJAX request to delete the destination
+        });
+
+        $('#destinations-table_filter input').on('keyup', function () {
+            dataTable.search(this.value).draw();
+        });
+    });
+</script>
+{% endblock %}

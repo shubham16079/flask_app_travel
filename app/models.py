@@ -76,6 +76,13 @@ class Destination(db.Model):
     @classmethod
     def get_all_destinations(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_destinations_list(cls, start, length):
+        query = cls.query
+        total_records = query.count()
+        destinations_list = query.offset(start).limit(length).all()
+        return destinations_list, total_records
     
     @classmethod
     def get_destinations_by_category(cls, slug):
