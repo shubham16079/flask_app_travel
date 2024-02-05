@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import or_
 from app import db
 
 
@@ -78,9 +79,18 @@ class Destination(db.Model):
         return cls.query.all()
 
     @classmethod
-    def get_destinations_list(cls, start, length):
+    def get_destinations_list(cls, start, length,search_value):
         query = cls.query
         total_records = query.count()
+        if search_value:
+            search_pattern = f"%{search_value}%"
+            query = query.filter(
+                or_(
+                    cls.name.ilike(search_pattern),
+                    cls.location.ilike(search_pattern),
+                    cls.slug.ilike(search_pattern)
+                )
+            )
         destinations_list = query.offset(start).limit(length).all()
         return destinations_list, total_records
     

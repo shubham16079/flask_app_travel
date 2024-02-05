@@ -59,6 +59,14 @@
                     url: baseUrl,
                     type: 'POST',
                     contentType: 'application/json',
+                    data: function (d) {
+                        d.draw = d.draw || 1;
+                        d.start = d.start || 0;
+                        d.length = d.length || 10;
+                        d.search = d.search || {};
+
+                        return JSON.stringify(d);
+                    },
                     "dataSrc": "data",
                 },
                 "columns": [

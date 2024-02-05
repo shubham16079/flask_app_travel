@@ -222,10 +222,12 @@ def get_destinations():
 
 @app.route('/admin/destinations-list', methods=['POST'])
 def get_destinations_list():
-    draw = request.form.get('draw', 1, type=int)
-    start = request.form.get('start', 0, type=int)
-    length = request.form.get('length', 10, type=int)
-    destinations_list, total_records = models.Destination.get_destinations_list(start, length)
+    data = request.get_json()
+    draw = data.get('draw', 1)
+    start = data.get('start', 0)
+    length = data.get('length', 10)
+    search_value = data.get('search', {}).get('value', '')
+    destinations_list, total_records = models.Destination.get_destinations_list(start, length,search_value)
 
     destination_list = [{'id': destination.id, 'name': destination.name, 'location': destination.location,
                          'slug': destination.slug,
