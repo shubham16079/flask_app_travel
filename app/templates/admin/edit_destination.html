@@ -1,0 +1,100 @@
+{% extends 'admin/admin.html' %}
+
+{% block title %}Home - Travel Website{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row flex-nowrap">
+        <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
+            <div class="container mt-4">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <h2>Edit Destination</h2>
+
+                <form action="{{url_for('edit_destination', id=destination.id)}}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    {% if form %}
+                        {{ form.hidden_tag() }}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" class="form-control {% if form.name.errors %}is-invalid{% endif %}" id="name" name="name" value="{{ form.name.data or '' }}" required>
+                                {% for error in form.name.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location:</label>
+                                <input type="text" class="form-control {% if form.location.errors %}is-invalid{% endif %}" id="location" name="location" value="{{ form.location.data or '' }}">
+                                {% for error in form.location.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="slug" class="form-label">Slug:</label>
+                                <input type="text" class="form-control {% if form.slug.errors %}is-invalid{% endif %}" id="slug" name="slug" value="{{ form.slug.data or '' }}" required>
+                                {% for error in form.slug.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category:</label>
+                                <select class="form-select form-control {% if form.category.errors %}is-invalid{% endif %}" id="category" name="category">
+                                    <option value="" selected="selected">Select Category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if form.category.data == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.category.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image URL:</label>
+                                {% if destination.image %}
+                                     <input type="file" class="form-control" id="image" name="image">
+                                     <input type="hidden" class="form-control" id="previous_image" name="previous_image" value="{{destination.image}}">
+                                    <img src="{{ url_for('static', filename='images/destinations/' + destination.image) }}" alt="Image Preview" class="img-thumbnail" height="100" width="100">
+                                    
+                                {% else %}
+                                    <input type="hidden" class="form-control" id="previous_image" name="previous_image" value="">
+                                    <input type="file" class="form-control {% if form.image.errors %}is-invalid{% endif %}" id="image" name="image" required>
+                                    {% for error in form.image.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description:</label>
+                                <textarea class="form-control {% if form.description.errors %}is-invalid{% endif %}" id="description" name="description" rows="4" required>{{ form.description.data or '' }}</textarea>
+                                {% for error in form.description.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

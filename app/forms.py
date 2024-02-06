@@ -17,3 +17,17 @@ class NewDestinationForm(FlaskForm):
 
     def set_category_choices(self, categories):
         self.category.choices = [(category.id, category.name) for category in categories]
+
+class EditDestinationForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(max=255)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired(), Length(max=255)])
+    slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
+    category = SelectField('category', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    class Meta:
+        csrf = False
+
+    def set_category_choices(self, categories):
+        self.category.choices = [(category.id, category.name) for category in categories]

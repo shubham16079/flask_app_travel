@@ -3,7 +3,7 @@ from app import app
 from app import models
 from werkzeug.utils import secure_filename
 import os
-from .forms import NewDestinationForm
+from .forms import NewDestinationForm,EditDestinationForm
 
 
 @app.context_processor
@@ -242,3 +242,37 @@ def get_destinations_list():
     }
 
     return jsonify(response)
+
+@app.route('/admin/edit-destination/<int:id>', methods=['GET', 'POST'])
+# @login_required
+def edit_destination(id):
+    categories = models.Category.get_all_categories()
+    destination = models.Destination.query.get_or_404(id)
+    form = EditDestinationForm(obj=destination)
+
+    if request.method == 'POST':
+        form.set_category_choices(categories)
+        if form.validate_on_submit():
+            form_data = request.form.to_dict()
+            print(form_data['previous_image'])
+            if 'image' in request.files:
+                image = request.files['image']
+                if image.filename != '':
+                    DESTINATION_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'destinations')
+                    os.makedirs(DESTINATION_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
+                    form_data['image'] = image.filename
+
+            models.Destination.update_destination(id, form_data)
+            flash('Destination Updated!', 'success')
+            return redirect(url_for('get_destinations'))
+
+    return render_template('admin/edit_destination.html', form=form, categories=categories, destination=destination)
+
+@app.route('/admin/delete-destination/<int:id>', methods=['POST'])
+# @login_required
+def delete_destination(id):
+    destination = models.Destination.query.get_or_404(id)
+    models.Destination.delete_destination(id)
+    flash('Destination deleted successfully!', 'success')
+    return redirect(url_for('get_destinations'))

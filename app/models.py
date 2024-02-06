@@ -116,4 +116,21 @@ class Destination(db.Model):
         new_destination = cls(**form_data)
         db.session.add(new_destination)
         db.session.commit()
-        return new_destination 
+        return new_destination
+    
+    @classmethod
+    def update_destination(cls, destination_id, form_data):
+        destination = cls.query.get(destination_id)
+
+        if destination:
+            for key, value in form_data.items():
+                setattr(destination, key, value)
+
+            db.session.commit()
+
+        return destination 
+    @classmethod
+    def delete_destination(cls, destination_id):
+        destination = cls.query.get_or_404(destination_id)
+        db.session.delete(destination)
+        db.session.commit()

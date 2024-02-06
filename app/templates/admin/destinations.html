@@ -77,29 +77,31 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-                            return '<button class="btn btn-sm btn-primary edit-btn" data-id="' + row.id + '">Edit</button>' +
-                                '<button class="btn btn-sm btn-danger delete-btn" data-id="' + row.id + '">Delete</button>';
+                            return '<a class="btn btn-sm btn-primary edit-btn" data-id="' + row.id + '" href="/admin/edit-destination/'+row.id+'">Edit</a>'+ 
+                                '<button class="btn btn-sm btn-danger delete-btn" data-id="' + row.id + '" style="margin-left:5px">Delete</button>';
                         }
                     },
                 ],
             });
         } else {
-            // If DataTable exists, just redraw it
             dataTable.ajax.reload();
         }
 
-        // Optional: Event listeners for edit and delete buttons
-        $('#destinations-table').on('click', '.edit-btn', function() {
-            var destinationId = $(this).data('id');
-            // Fetch destination details and show edit form
-            // Example: You can make another AJAX request to get details and populate the form
-            // Display the edit form using: $('#edit-form').show();
-        });
-
         $('#destinations-table').on('click', '.delete-btn', function() {
             var destinationId = $(this).data('id');
-            // Implement logic to delete the destination
-            // Example: You can make an AJAX request to delete the destination
+            if(confirm("Are you sure you want to delete")) {
+                $.ajax({
+                    url: '/admin/delete-destination/' + destinationId,
+                    type: 'POST',
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(error) {
+                        alert('Error deleting destination');
+                        console.error(error);
+                    }
+                });
+            }
         });
 
         $('#destinations-table_filter input').on('keyup', function () {
