@@ -5,7 +5,11 @@
 {% block content %}
   {% if slug and not is_category_wise %}
     {% for experience in experiences_test %}
-          <img class="slider_image" src="{{ url_for('static', filename='images/slider_city.jpeg') }}" alt="Card image cap">
+    {% if experience.slider_image %}
+        <img class="slider_image" src="{{ url_for('static', filename='images/experiences/slider/'+experience.slider_image) }}" alt="Card image cap">
+        {%else%}
+        <img class="slider_image" src="{{ url_for('static', filename='images/experiences/slider/city1.jpg') }}" alt="Card image cap">
+    {%endif%}
           <div class="centered">{{ experience.name }}</div>
           <div class="container-fluid">
             <hr>

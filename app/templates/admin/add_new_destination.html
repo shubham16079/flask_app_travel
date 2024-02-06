@@ -72,6 +72,13 @@
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Slider Image:</label>
+                                <input type="file" class="form-control {% if form.slider_image.errors %}is-invalid{% endif %}" id="slider_image" name="slider_image">
+                                {% for error in form.slider_image.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description:</label>

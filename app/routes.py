@@ -207,6 +207,13 @@ def new_destination():
                     os.makedirs(DESTINATION_FOLDER, exist_ok=True)
                     save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
                     form_data['image'] = image.filename
+            if 'slider_image' in request.files:
+                image = request.files['slider_image']
+                if image.filename != '':
+                    DESTINATION_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'destinations','slider')
+                    os.makedirs(DESTINATION_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
+                    form_data['slider_image'] = image.filename
 
             lastInsertId = models.Destination.save_new_destination(form_data)
             if lastInsertId:
@@ -254,7 +261,6 @@ def edit_destination(id):
         form.set_category_choices(categories)
         if form.validate_on_submit():
             form_data = request.form.to_dict()
-            print(form_data['previous_image'])
             if 'image' in request.files:
                 image = request.files['image']
                 if image.filename != '':
@@ -262,6 +268,13 @@ def edit_destination(id):
                     os.makedirs(DESTINATION_FOLDER, exist_ok=True)
                     save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
                     form_data['image'] = image.filename
+            if 'slider_image' in request.files:
+                image = request.files['slider_image']
+                if image.filename != '':
+                    DESTINATION_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'destinations','slider')
+                    os.makedirs(DESTINATION_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(DESTINATION_FOLDER, secure_filename(image.filename)))
+                    form_data['slider_image'] = image.filename
 
             models.Destination.update_destination(id, form_data)
             flash('Destination Updated!', 'success')
@@ -290,7 +303,6 @@ def new_experience():
                 flash('Experience already exist', 'success')
                 return render_template('admin/add_new_experience.html', form=form, categories=categories)
             form_data = request.form.to_dict()
-            print(form_data)
             if 'image' in request.files:
                 image = request.files['image']
                 if image.filename != '':
@@ -298,6 +310,13 @@ def new_experience():
                     os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
                     save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
                     form_data['image'] = image.filename
+            if 'slider_image' in request.files:
+                image = request.files['slider_image']
+                if image.filename != '':
+                    EXPERIENCE_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'experiences','slider')
+                    os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
+                    form_data['slider_image'] = image.filename
 
             lastInsertId = models.Experience.save_new_experience(form_data)
             if lastInsertId:
@@ -352,6 +371,13 @@ def edit_experience(id):
                     os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
                     save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
                     form_data['image'] = image.filename
+            if 'slider_image' in request.files:
+                image = request.files['slider_image']
+                if image.filename != '':
+                    EXPERIENCE_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'experiences','slider')
+                    os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
+                    form_data['slider_image'] = image.filename
 
             models.Experience.update_experience(id, form_data)
             flash('Experience Updated!', 'success')

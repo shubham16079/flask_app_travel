@@ -80,6 +80,21 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Slider Image:</label>
+                                {% if experience.slider_image %}
+                                     <input type="file" class="form-control" id="slider_image" name="slider_image">
+                                     <input type="hidden" class="form-control" id="previous_image_slider" name="previous_image_slider" value="{{experience.slider_image}}">
+                                    <img src="{{ url_for('static', filename='images/experiences/slider/' + experience.slider_image) }}" alt="Image Preview" class="img-thumbnail" height="100" width="100">
+                                    
+                                {% else %}
+                                    <input type="hidden" class="form-control" id="previous_image_slider" name="previous_image_slider" value="">
+                                    <input type="file" class="form-control {% if form.slider_image.errors %}is-invalid{% endif %}" id="slider_image" name="slider_image" required>
+                                    {% for error in form.slider_image.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
                             <input type="hidden" id="destination" name="destination" value="2">
 
                             <div class="mb-3">

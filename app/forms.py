@@ -9,6 +9,7 @@ class NewDestinationForm(FlaskForm):
     location = StringField('Location', validators=[DataRequired(), Length(max=255)])
     slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
     image = FileField('Image', validators=[DataRequired()])
+    slider_image = FileField('SliderImage', validators=[DataRequired()])
     category = SelectField('category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -23,6 +24,7 @@ class EditDestinationForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired(), Length(max=255)])
     slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
+    slider_image = FileField('SliderImage')
     category = SelectField('category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -38,6 +40,7 @@ class NewExperienceForm(FlaskForm):
     landmark = StringField('Landmark', validators=[DataRequired(), Length(max=255)])
     slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
     image = FileField('Image', validators=[DataRequired()])
+    slider_image = FileField('SliderImage', validators=[DataRequired()])
     category = SelectField('category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -54,6 +57,7 @@ class EditExperienceForm(FlaskForm):
     slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
     category = SelectField('category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
+    slider_image = FileField('SliderImage')
 
     class Meta:
         csrf = False

@@ -11,7 +11,11 @@
 
 {% if slug and not is_category_wise %}
     {% for all_destination in destinations_test %}
-                <img class="slider_image" src="{{ url_for('static', filename='images/kashi_slider.jpg') }}" alt="Card image cap">
+            {% if all_destination.slider_image %}
+                <img class="slider_image" src="{{ url_for('static', filename='images/destinations/slider/'+all_destination.slider_image) }}" alt="Card image cap">
+                {%else%}
+                <img class="slider_image" src="{{ url_for('static', filename='images/destinations/slider/city4.jpg') }}" alt="Card image cap">
+            {%endif%}
                 <div class="centered">{{ all_destination.name }}</div>
         <div class="container-fluid mt-3">
             <hr>
