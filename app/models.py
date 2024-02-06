@@ -11,6 +11,7 @@ class Experience(db.Model):
     destination = db.Column() 
     image = db.Column() 
     name = db.Column()
+    landmark = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='experiences')
 
@@ -47,6 +48,64 @@ class Experience(db.Model):
     @classmethod
     def get_other_experiences(cls,slug):
         return cls.query.filter(cls.slug != slug).limit(8).all() 
+    
+    @classmethod
+    def get_experiences_list(cls, start, length,search_value):
+        query = cls.query
+        total_records = query.count()
+        if search_value:
+            search_pattern = f"%{search_value}%"
+            query = query.filter(
+                or_(
+                    cls.name.ilike(search_pattern),
+                    cls.landmark.ilike(search_pattern),
+                    cls.slug.ilike(search_pattern)
+                )
+            )
+        experiences_list = query.offset(start).limit(length).all()
+        return experiences_list, total_records
+    
+    @classmethod
+    def get_experiences_by_category(cls, slug):
+     if slug == 'all':
+        return cls.query.all()
+     else:
+        category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
+        return cls.query.filter_by(category=category_id).all()
+     
+    @classmethod
+    def get_experiences_by_search(cls, search_text): 
+       return cls.query.filter(
+            (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
+        ).limit(10).all()
+
+    @classmethod
+    def get_other_experiences(cls,slug):
+        return cls.query.filter(cls.slug != slug).limit(8).all() 
+    @classmethod
+    def save_new_experience(cls,form_data):
+        new_experience = cls(**form_data)
+        db.session.add(new_experience)
+        db.session.commit()
+        return new_experience
+    
+    @classmethod
+    def update_experience(cls, experience_id, form_data):
+        experience = cls.query.get(experience_id)
+
+        if experience:
+            for key, value in form_data.items():
+                setattr(experience, key, value)
+
+            db.session.commit()
+
+        return experience 
+    @classmethod
+    def delete_experience(cls, experience_id):
+        experience = cls.query.get_or_404(experience_id)
+        db.session.delete(experience)
+        db.session.commit()
+    
 
 class Category(db.Model):
     __tablename__ = 'categories'

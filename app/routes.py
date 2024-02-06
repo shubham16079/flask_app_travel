@@ -3,7 +3,7 @@ from app import app
 from app import models
 from werkzeug.utils import secure_filename
 import os
-from .forms import NewDestinationForm,EditDestinationForm
+from .forms import NewDestinationForm,EditDestinationForm,NewExperienceForm,EditExperienceForm
 
 
 @app.context_processor
@@ -276,3 +276,93 @@ def delete_destination(id):
     models.Destination.delete_destination(id)
     flash('Destination deleted successfully!', 'success')
     return redirect(url_for('get_destinations'))
+
+@app.route('/admin/add_new_experience', methods=['GET', 'POST'])
+# @login_required
+def new_experience():
+    categories = models.Category.get_all_categories()
+    form = NewExperienceForm()
+    if request.method == 'POST':
+        form.set_category_choices(categories)
+        if form.validate_on_submit():
+            isExistExperience = models.Experience.get_by_slug(request.form.get('slug'))
+            if isExistExperience:
+                flash('Experience already exist', 'success')
+                return render_template('admin/add_new_experience.html', form=form, categories=categories)
+            form_data = request.form.to_dict()
+            print(form_data)
+            if 'image' in request.files:
+                image = request.files['image']
+                if image.filename != '':
+                    EXPERIENCE_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'experiences')
+                    os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
+                    form_data['image'] = image.filename
+
+            lastInsertId = models.Experience.save_new_experience(form_data)
+            if lastInsertId:
+                flash('Experience Saved!', 'success')
+
+    return render_template('admin/add_new_experience.html', form=form, categories=categories)
+
+@app.route('/admin/experiences')
+def get_experiences():
+    return render_template('admin/experiences.html')
+
+
+@app.route('/admin/experiences-list', methods=['POST'])
+def get_experiences_list():
+    data = request.get_json()
+    draw = data.get('draw', 1)
+    start = data.get('start', 0)
+    length = data.get('length', 10)
+    search_value = data.get('search', {}).get('value', '')
+    experiences_list, total_records = models.Experience.get_experiences_list(start, length,search_value)
+
+    experience_list = [{'id': experience.id, 'name': experience.name, 'landmark': experience.landmark,
+                         'slug': experience.slug,
+                         'category_name': experience.category if experience.category else ''}
+                        for experience in experiences_list]
+
+    response = {
+        'draw': draw,
+        'recordsTotal': total_records,
+        'recordsFiltered': total_records,
+        'data': experience_list
+    }
+
+    return jsonify(response)
+
+@app.route('/admin/edit-experience/<int:id>', methods=['GET', 'POST'])
+# @login_required
+def edit_experience(id):
+    categories = models.Category.get_all_categories()
+    experience = models.Experience.query.get_or_404(id)
+    form = EditExperienceForm(obj=experience)
+
+    if request.method == 'POST':
+        form.set_category_choices(categories)
+        if form.validate_on_submit():
+            form_data = request.form.to_dict()
+            print(form_data['previous_image'])
+            if 'image' in request.files:
+                image = request.files['image']
+                if image.filename != '':
+                    EXPERIENCE_FOLDER = os.path.join(os.getcwd(), 'app', 'static', 'images', 'experiences')
+                    os.makedirs(EXPERIENCE_FOLDER, exist_ok=True)
+                    save_image = image.save(os.path.join(EXPERIENCE_FOLDER, secure_filename(image.filename)))
+                    form_data['image'] = image.filename
+
+            models.Experience.update_experience(id, form_data)
+            flash('Experience Updated!', 'success')
+            return redirect(url_for('get_experiences'))
+
+    return render_template('admin/edit_experience.html', form=form, categories=categories, experience=experience)
+
+@app.route('/admin/delete-experience/<int:id>', methods=['POST'])
+# @login_required
+def delete_experience(id):
+    destination = models.Experience.query.get_or_404(id)
+    models.Experience.delete_experience(id)
+    flash('Experience deleted successfully!', 'success')
+    return redirect(url_for('get_experiences'))
