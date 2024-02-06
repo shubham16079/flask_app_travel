@@ -12,6 +12,7 @@ class Experience(db.Model):
     image = db.Column() 
     slider_image = db.Column()
     name = db.Column()
+    status = db.Column()
     landmark = db.Column()
     category = db.Column(db.Integer, db.ForeignKey('categories.id'))
     categories = db.relationship('Category',foreign_keys=[category],  backref='experiences')
@@ -35,10 +36,6 @@ class Experience(db.Model):
     def get_all(cls):
         return cls.query.all()
     
-    @classmethod
-    def get_experiences_by_category(cls, slug):
-     category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
-     return cls.query.filter_by(category=category_id).all()
     
     @classmethod
     def get_experiences_by_search(cls, search_text): 
@@ -63,7 +60,7 @@ class Experience(db.Model):
                     cls.slug.ilike(search_pattern)
                 )
             )
-        experiences_list = query.offset(start).limit(length).all()
+        experiences_list = query.filter(cls.status =='active').offset(start).limit(length).all()
         return experiences_list, total_records
     
     @classmethod
@@ -72,12 +69,13 @@ class Experience(db.Model):
         return cls.query.all()
      else:
         category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
-        return cls.query.filter_by(category=category_id).all()
+        return cls.query.filter_by(category=category_id,status='active').all()
      
     @classmethod
     def get_experiences_by_search(cls, search_text): 
        return cls.query.filter(
-            (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
+            (cls.name.ilike(f"%{search_text}%") | (cls.slug.ilike(f"%{search_text}%")))
+            & (cls.status == 'active')
         ).limit(10).all()
 
     @classmethod
@@ -104,7 +102,7 @@ class Experience(db.Model):
     @classmethod
     def delete_experience(cls, experience_id):
         experience = cls.query.get_or_404(experience_id)
-        db.session.delete(experience)
+        experience.status = 'inactive'
         db.session.commit()
     
 
@@ -125,6 +123,7 @@ class Destination(db.Model):
     slug = db.Column()
     description = db.Column()
     image = db.Column()
+    status = db.Column()
     slider_image = db.Column()
     name = db.Column()
     location = db.Column()
@@ -152,7 +151,7 @@ class Destination(db.Model):
                     cls.slug.ilike(search_pattern)
                 )
             )
-        destinations_list = query.offset(start).limit(length).all()
+        destinations_list = query.filter(cls.status == 'active').offset(start).limit(length).all()
         return destinations_list, total_records
     
     @classmethod
@@ -166,7 +165,8 @@ class Destination(db.Model):
     @classmethod
     def get_destinations_by_search(cls, search_text): 
        return cls.query.filter(
-            (cls.name.ilike(f"%{search_text}%")) | (cls.slug.ilike(f"%{search_text}%"))
+            (cls.name.ilike(f"%{search_text}%") | (cls.slug.ilike(f"%{search_text}%")))
+            & (cls.status == 'active')
         ).limit(10).all()
 
     @classmethod

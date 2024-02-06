@@ -9,10 +9,10 @@
     <div class="row flex-nowrap">
         <main class="col-md-12 ms-sm-auto col-lg-12 px-md-4">
             <div class="container mt-4">
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {% with delete_messages = get_flashed_messages(category_filter=['deleted']) %}
+                    {% if delete_messages %}
+                        {% for message in delete_messages %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ message }}
                             </div>
                         {% endfor %}
@@ -93,8 +93,10 @@
                 $.ajax({
                     url: '/admin/delete-experience/' + destinationId,
                     type: 'POST',
+                    contentType: 'application/json',
                     success: function(response) {
-                        alert(response.message);
+                       alert('Experiences deleted successfully')
+                       location.reload();
                     },
                     error: function(error) {
                         alert('Error deleting destination');

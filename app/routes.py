@@ -390,5 +390,5 @@ def edit_experience(id):
 def delete_experience(id):
     destination = models.Experience.query.get_or_404(id)
     models.Experience.delete_experience(id)
-    flash('Experience deleted successfully!', 'success')
+    flash('Experience deleted successfully!', 'deleted')
     return redirect(url_for('get_experiences'))

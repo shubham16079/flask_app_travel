@@ -40,7 +40,7 @@
           <div class="col-md-3 mb-4">
             <a href="{{ url_for('destination_by_slug',slug=home_destination.slug) }}" style="color: black;">
               <div class="card" style="width: 18rem;">
-                  <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
+                  <img class="card-img-top" src="{{ url_for('static', filename='images/'+home_destination.image) }}" alt="Card image cap">
                   <div class="card-body">
                       <h5 class="card-title">{{ home_destination.slug }}</h5>
             </a>
