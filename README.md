@@ -1,5 +1,6 @@
 
 Introduction
+
 Welcome to the Travel Website Flask project! This application is designed to provide a travel website experience with both frontend and backend functionalities. The backend offers an admin interface accessible at 127.0.0.1:5000/admin, where you can log in using the provided credentials (username: admin@gmail.com, password: password). The frontend includes common search functionalities for destinations and experiences, along with categorized data.
 
 Getting Started
