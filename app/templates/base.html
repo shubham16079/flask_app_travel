@@ -105,11 +105,12 @@
                     if (response.destinations != undefined && response.destinations.length > 0) {
                         searchData += '<div class="destination-container col-md-6">';
                         searchData += '<h4 class="h4">Destinations</h4>';
+                        console.log(response.destinations,'response.destinations')
                         for (let i = 0; i < response.destinations.length; i++) {
                             searchData += '<div class="card search_card">';
                             let redirect_url = '{{url_for("destination_by_slug",slug="")}}'+response.destinations[i].slug;
                             searchData += '<a href="'+redirect_url+'">';
-                            searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.destinations[i].image + '" class="card-img-top" alt="Destination Image">';
+                            searchData += '<img src="{{ url_for("static", filename="images/destinations/") }}' + response.destinations[i].image + '" class="card-img-top" alt="Destination Image">';
                             searchData += '<div class="card-body">';
                             searchData += '<h5 class="card-title">' + response.destinations[i].name + '</h5>';
                             searchData += '</a>';
@@ -128,7 +129,7 @@
                             searchData += '<div class="card search_card">';
                             let redirect_url = '{{url_for("experience_by_slug",slug="")}}'+response.experiences[i].slug;
                             searchData += '<a href="'+redirect_url+'">';
-                            searchData += '<img src="{{ url_for("static", filename="images/") }}' + response.experiences[i].image + '" class="card-img-top" alt="Experience Image">';
+                            searchData += '<img src="{{ url_for("static", filename="images/experiences/") }}' + response.experiences[i].image + '" class="card-img-top" alt="Experience Image">';
                             searchData += '<div class="card-body">';
                             searchData += '<h5 class="card-title">' + response.experiences[i].name + '</h5>';
                             searchData += '</a>';
@@ -182,7 +183,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 {{ _('Bharat') }}. {{ _('All rights reserved.') }}</p>
+        <p>&copy; 2024 {{ _('XYZ') }}. {{ _('All rights reserved.') }}</p>
     </footer>
 </body>
 </html>

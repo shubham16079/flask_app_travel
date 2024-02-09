@@ -16,9 +16,8 @@
             <p class="card-text">{{ experience.description }}</p>
           </div>
     {% endfor %}
-   
+        <br>
     <div class="container-fluid">
-      <hr>
       <div class="col-md-12 text-center">
           <h3>Explore other experiences</h3>
       </div>
@@ -27,9 +26,9 @@
               <div class="col-md-3 mb-4">
                   <div class="card" style="width: 18rem;">
                       <a href="{{ url_for('experience_by_slug', slug=other_experience.slug) }}">
-                          <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ other_experience.categories.image) }}" alt="Card image cap">
+                          <img class="card-img-top" src="{{ url_for('static', filename='images/experiences/' ~ other_experience.image) }}" alt="Card image cap">
                           <div class="card-body">
-                              <h5 class="card-title">{{ other_experience.slug }}</h5>
+                              <h5 class="card-title">{{ other_experience.name }}</h5>
                           </a>
                           <p class="card-text read_more_content">{{ other_experience.description }}</p>
                           <a href="javascript:void(0)" class="read_more_button">Read More</a>
@@ -50,10 +49,13 @@
         {% for experience in experiences_pagination.items %}
           <div class="col-md-3 mb-4">
             <div class="card" style="width: 18rem;">
-              <img class="card-img-top" src="{{ url_for('static', filename='images/nature.jpeg') }}" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{ experience.slug }}</h5>
-                <p class="card-text">{{ experience.description }}</p>
+              <a href="{{ url_for('experience_by_slug', slug=experience.slug) }}">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/experiences/'~experience.image) }}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">{{ experience.name }}</h5>
+              </a>
+                <p class="card-text read_more_content">{{ experience.description }}</p>
+                <a href="javascript:void(0)" class="read_more_button">Read More</a>
               </div>
             </div>
           </div>
@@ -83,9 +85,9 @@
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
                <a href="{{ url_for('experience_by_slug', slug=experience_by_category.slug) }}">
-                <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ experience_by_category.image) }}" alt="Card image cap">
+                <img class="card-img-top" src="{{ url_for('static', filename='images/experiences/' ~ experience_by_category.image) }}" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{ experience_by_category.slug }}</h5>
+                  <h5 class="card-title">{{ experience_by_category.name }}</h5>
               </a>
                 <p class="card-text read_more_content">{{ experience_by_category.description }}</p>
                 <a href="javascript:void(0)" class="read_more_button">Read More</a>

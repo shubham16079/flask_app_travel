@@ -42,6 +42,7 @@ class NewExperienceForm(FlaskForm):
     image = FileField('Image', validators=[DataRequired()])
     slider_image = FileField('SliderImage', validators=[DataRequired()])
     category = SelectField('category', coerce=int, validators=[DataRequired()])
+    destination = SelectField('destination',coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
 
     class Meta:
@@ -49,6 +50,9 @@ class NewExperienceForm(FlaskForm):
 
     def set_category_choices(self, categories):
         self.category.choices = [(category.id, category.name) for category in categories]
+        
+    def set_destination_choices(self, destinations):
+        self.destination.choices = [(destination.id, destination.name) for destination in destinations]
 
 class EditExperienceForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(max=255)])
@@ -56,6 +60,7 @@ class EditExperienceForm(FlaskForm):
     landmark = StringField('Landmark', validators=[DataRequired(), Length(max=255)])
     slug = StringField('Slug', validators=[DataRequired(), Length(max=255)])
     category = SelectField('category', coerce=int, validators=[DataRequired()])
+    destination = SelectField('destination',coerce=int, validators=[DataRequired()])
     submit = SubmitField('Submit')
     slider_image = FileField('SliderImage')
 
@@ -64,4 +69,7 @@ class EditExperienceForm(FlaskForm):
 
     def set_category_choices(self, categories):
         self.category.choices = [(category.id, category.name) for category in categories]
+        
+    def set_destination_choices(self, destinations):
+        self.destination.choices = [(destination.id, destination.name) for destination in destinations]
     

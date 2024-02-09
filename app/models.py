@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import or_
+from sqlalchemy import or_,and_
 from app import db
 
 
@@ -44,8 +44,8 @@ class Experience(db.Model):
         ).limit(10).all()
         
     @classmethod
-    def get_other_experiences(cls,slug):
-        return cls.query.filter(cls.slug != slug).limit(8).all() 
+    def get_other_experiences(cls,slug,destination_id):
+        return cls.query.filter(and_(cls.slug != slug,cls.destination == destination_id)).limit(8).all() 
     
     @classmethod
     def get_experiences_list(cls, start, length,search_value):
@@ -78,9 +78,6 @@ class Experience(db.Model):
             & (cls.status == 'active')
         ).limit(10).all()
 
-    @classmethod
-    def get_other_experiences(cls,slug):
-        return cls.query.filter(cls.slug != slug).limit(8).all() 
     @classmethod
     def save_new_experience(cls,form_data):
         new_experience = cls(**form_data)
@@ -156,7 +153,7 @@ class Destination(db.Model):
     
     @classmethod
     def get_destinations_by_category(cls, slug):
-     if slug == 'all':
+     if slug == 'all' or slug == 'popular':
         return cls.query.all()
      else:
         category_id = db.session.query(Category.id).filter(Category.slug == slug).scalar()
@@ -195,3 +192,13 @@ class Destination(db.Model):
         destination = cls.query.get_or_404(destination_id)
         db.session.delete(destination)
         db.session.commit()
+
+class State(db.Model):
+    __tablename__ = 'states'
+    id = db.Column(db.Integer, primary_key=True)
+    state = db.Column()    
+    state_code = db.Column()
+    status = db.Column()
+    @classmethod
+    def get_all_states(cls):
+        return cls.query.all()

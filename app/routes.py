@@ -56,8 +56,9 @@ def set_locale(lang):
 
 @app.route('/experience/<slug>')
 def experience_by_slug(slug):
-    other_experiences = models.Experience.get_other_experiences(slug)
     experiences_test = models.Experience.get_by_slug(slug)
+    destination_id = experiences_test[0].destination
+    other_experiences = models.Experience.get_other_experiences(slug,destination_id)
     return render_template('experience.html', slug=slug, experiences_test=experiences_test,
                            other_experiences=other_experiences)
 
@@ -96,7 +97,7 @@ def ajax_experiences():
     destination_id = data.get('destination_id')
     category_id = data.get('category_id')
     experiences_data = models.Experience.query.filter_by(destination=destination_id, category=category_id).all()
-    experiences = [{'slug': exp.slug, 'description': exp.description, 'image': exp.image} for exp in experiences_data]
+    experiences = [{'slug': exp.slug, 'description': exp.description, 'image': exp.image,'name':exp.name} for exp in experiences_data]
     return jsonify({'experiences': experiences})
 
 
@@ -191,6 +192,7 @@ def logout():
 # @login_required
 def new_destination():
     categories = models.Category.get_all_categories()
+    states = models.State.get_all_states()
     form = NewDestinationForm()
     if request.method == 'POST':
         form.set_category_choices(categories)
@@ -219,7 +221,7 @@ def new_destination():
             if lastInsertId:
                 flash('Destination Saved!', 'success')
 
-    return render_template('admin/add_new_destination.html', form=form, categories=categories)
+    return render_template('admin/add_new_destination.html', form=form, categories=categories,states=states)
 
 
 @app.route('/admin/destinations')
@@ -280,7 +282,7 @@ def edit_destination(id):
             flash('Destination Updated!', 'success')
             return redirect(url_for('get_destinations'))
 
-    return render_template('admin/edit_destination.html', form=form, categories=categories, destination=destination)
+    return render_template('admin/edit_destination.html', form=form, categories=categories, destination=destination,destinations=destinations)
 
 @app.route('/admin/delete-destination/<int:id>', methods=['POST'])
 # @login_required
@@ -294,9 +296,11 @@ def delete_destination(id):
 # @login_required
 def new_experience():
     categories = models.Category.get_all_categories()
+    destinations = models.Destination.get_all_destinations()
     form = NewExperienceForm()
     if request.method == 'POST':
         form.set_category_choices(categories)
+        form.set_destination_choices(destinations)
         if form.validate_on_submit():
             isExistExperience = models.Experience.get_by_slug(request.form.get('slug'))
             if isExistExperience:
@@ -322,7 +326,7 @@ def new_experience():
             if lastInsertId:
                 flash('Experience Saved!', 'success')
 
-    return render_template('admin/add_new_experience.html', form=form, categories=categories)
+    return render_template('admin/add_new_experience.html', form=form, categories=categories,destinations=destinations)
 
 @app.route('/admin/experiences')
 def get_experiences():
@@ -357,10 +361,12 @@ def get_experiences_list():
 def edit_experience(id):
     categories = models.Category.get_all_categories()
     experience = models.Experience.query.get_or_404(id)
+    destinations = models.Destination.get_all_destinations()
     form = EditExperienceForm(obj=experience)
 
     if request.method == 'POST':
         form.set_category_choices(categories)
+        form.set_destination_choices(categories)
         if form.validate_on_submit():
             form_data = request.form.to_dict()
             print(form_data['previous_image'])
@@ -383,7 +389,7 @@ def edit_experience(id):
             flash('Experience Updated!', 'success')
             return redirect(url_for('get_experiences'))
 
-    return render_template('admin/edit_experience.html', form=form, categories=categories, experience=experience)
+    return render_template('admin/edit_experience.html', form=form, categories=categories, experience=experience,destinations=destinations)
 
 @app.route('/admin/delete-experience/<int:id>', methods=['POST'])
 # @login_required

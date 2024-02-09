@@ -35,11 +35,17 @@
 
                             <div class="mb-3">
                                 <label for="location" class="form-label">Location:</label>
-                                <input type="text" class="form-control {% if form.location.errors %}is-invalid{% endif %}" id="location" name="location" value="{{ form.location.data or '' }}">
+                                <select class="form-select form-control {% if form.location.errors %}is-invalid{% endif %}" id="location" name="location">
+                                    <option value="" selected="selected">Select Location</option>
+                                    {% for state in states %}
+                                        <option value="{{ state.id }}" {% if form.location.data == state.id %}selected{% endif %}>{{ state.state }}</option>
+                                    {% endfor %}
+                                </select>
                                 {% for error in form.location.errors %}
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                            <input type="hidden" name="status" id="status" value="active" />
 
                             <div class="mb-3">
                                 <label for="slug" class="form-label">Slug:</label>

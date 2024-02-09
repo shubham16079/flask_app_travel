@@ -61,6 +61,18 @@
                                     <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                             </div>
+                            <div class="mb-3">
+                                <label for="destination" class="form-label">Destination:</label>
+                                <select class="form-select form-control {% if form.destination.errors %}is-invalid{% endif %}" id="destination" name="destination">
+                                    <option value="" selected="selected">Select Desination</option>
+                                    {% for destination in destinations %}
+                                        <option value="{{ destination.id }}" {% if form.destination.data == destination.id %}selected{% endif %}>{{ destination.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.destination.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
 
                         </div>
 

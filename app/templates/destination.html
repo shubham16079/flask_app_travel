@@ -18,9 +18,13 @@
             {%endif%}
                 <div class="centered">{{ all_destination.name }}</div>
         <div class="container-fluid mt-3">
-            <hr>
+
             <p>{{ all_destination.description }}</p>
-            <hr>
+            
+            <div class="col-md-12 text-center">
+                <h5 id="attractions_heading"></h5>
+            </div>
+        
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 {% for category_data in unique_categories %}
                     <li class="nav-item p-1" role="presentation">
@@ -33,6 +37,7 @@
                                 aria-controls="{{ category_data.name|lower }}" 
                                 aria-selected="false"
                                 data-destination-id="{{ all_destination.id }}"
+                                data-destination-name="{{ all_destination.name }}"
                                 data-category-id="{{ category_data.id }}">
                             {{ category_data.name }}<span class="{{ category_data.name|lower }}-count"></span>
                         </button>
@@ -52,8 +57,8 @@
         </div>
     {% endfor %}
     <div class="container-fluid">
-        <div class="col-md-12 text-center">
-            <h3>Explore other destinations</h3>
+        <div class="col-md-12 text-center mb-2">
+            <h5>Explore other destinations</h5>
         </div>
 
         <div class="row other_destinations_div" style="margin-top:10px">
@@ -61,9 +66,9 @@
                 <div class="col-md-3 mb-4">
                     <div class="card" style="width: 18rem;">
                         <a href="{{ url_for('destination_by_slug', slug=other_destination.slug) }}">
-                            <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ other_destination.categories.image) }}" alt="Card image cap">
+                            <img class="card-img-top" src="{{ url_for('static', filename='images/destinations/' ~ other_destination.image) }}" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">{{ other_destination.slug }}</h5>
+                                <h5 class="card-title">{{ other_destination.name }}</h5>
                             </a>
                             <p class="card-text read_more_content">{{ other_destination.description }}</p>
                             <a href="javascript:void(0)" class="read_more_button">Read More</a>
@@ -84,10 +89,13 @@
             {% for all_destination in all_destinations.items %}
                 <div class="col-md-3 mb-4">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ all_destination.categories.image) }}" alt="Card image cap">
+                        <a href="{{ url_for('destination_by_slug', slug=all_destination.slug) }}">
+                        <img class="card-img-top" src="{{ url_for('static', filename='images/destinations/' ~ all_destination.image) }}" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">{{ all_destination.slug }}</h5>
-                            <p class="card-text">{{ all_destination.description }}</p>
+                            <h5 class="card-title">{{ all_destination.name }}</h5>
+                        </a>
+                            <p class="card-text read_more_content">{{ all_destination.description }}</p>
+                            <a href="javascript:void(0)" class="read_more_button">Read More</a>
                         </div>
                     </div>
                 </div>
@@ -116,7 +124,7 @@
         <div class="col-md-3 mb-4">
           <div class="card" style="width: 18rem;">
                 <a href="{{ url_for('destination_by_slug', slug=destination_by_category.slug) }}">
-                    <img class="card-img-top" src="{{ url_for('static', filename='images/' ~ destination_by_category.image) }}" alt="Card image cap">
+                    <img class="card-img-top" src="{{ url_for('static', filename='images/destinations/' ~ destination_by_category.image) }}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">{{ destination_by_category.name }}</h5>
                 </a>
@@ -135,6 +143,7 @@
             e.preventDefault();
             var destinationId = $(this).data('destination-id');
             var categoryId =  $(this).data('category-id');
+            var destinationName =  $(this).data('destination-name');
             var categoryName = $(this).contents().filter(function() {
                 return this.nodeType === 3;
             }).text().trim();
@@ -146,16 +155,17 @@
                 data: JSON.stringify({ destination_id: destinationId, category_id: categoryId }),
                 dataType: 'json',
                 success: function(response) {
+                    $('#attractions_heading').html('Attractions in '+destinationName);
                     var experiencesHtml = '';
                     for (var i = 0; i < response.experiences.length; i++) {
-                        var imageUrl = "{{ url_for('static', filename='images/') }}" + response.experiences[i].image;
+                        var imageUrl = "{{ url_for('static', filename='images/experiences/') }}" + response.experiences[i].image;
                         var experienceSlug = "{{ url_for('experience_by_slug', slug='') }}" + response.experiences[i].slug;
                         experiencesHtml += '<div class="col-md-3 mb-4">';
                         experiencesHtml += '<a href="' + experienceSlug + '" class="card-link">';
                         experiencesHtml += '<div class="card" style="width: 18rem;">';
                         experiencesHtml += '<img class="card-img-top" src="' + imageUrl + '" alt="Card image cap">';
                         experiencesHtml += '<div class="card-body">';
-                        experiencesHtml += '<h5 class="card-title">' + response.experiences[i].slug + '</h5></a>';
+                        experiencesHtml += '<h5 class="card-title">' + response.experiences[i].name + '</h5></a>';
                         experiencesHtml += '<p class="card-text read_more_content">' + response.experiences[i].description + '</p>';
                         experiencesHtml += '<a href="javascript:void(0)" class="read_more_button">Read More</a>';
                         experiencesHtml += '</div></div></div>'; 
