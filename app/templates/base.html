@@ -59,7 +59,7 @@
 
 
             <div class="nav-item">
-                <img src="{{ url_for('static', filename='images/search_icon.svg') }}" style="padding-top: 6px;height: 33px;cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg"/>
+                <img class="search_button" src="{{ url_for('static', filename='images/search_icon.svg') }}" style="padding-top: 6px;height: 33px;cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg"/>
             </div>
         </div>
     </nav>
@@ -72,7 +72,7 @@
                         <div class="col-md-12 text-center">
                             <h3>Search</h3>
                         </div>
-                        <input class="form-control" value="" id="common_search" autocomplete="off" autofocus="" type="text" placeholder="Type Here...">
+                        <input class="form-control" value="" id="common_search" autocomplete="off" autofocus="autofocus" type="text" placeholder="Type Here...">
                     </div>
                     <div id="search_data_container" class="row">
                         <!-- search data will be placed here -->
@@ -176,6 +176,12 @@
                 }
             });
         }
+        $(document).on('click','.search_button',function(){
+          setTimeout(function(){
+            $('#common_search').focus();
+          },1000)
+
+        })
     </script>
 
     <main>
