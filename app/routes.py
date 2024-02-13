@@ -282,7 +282,7 @@ def edit_destination(id):
             flash('Destination Updated!', 'success')
             return redirect(url_for('get_destinations'))
 
-    return render_template('admin/edit_destination.html', form=form, categories=categories, destination=destination,destinations=destinations)
+    return render_template('admin/edit_destination.html', form=form, categories=categories, destination=destination)
 
 @app.route('/admin/delete-destination/<int:id>', methods=['POST'])
 # @login_required
